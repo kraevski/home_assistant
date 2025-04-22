@@ -1,0 +1,52 @@
+- alias: DryingMachine
+  description: ""
+  triggers:
+    - type: power
+      device_id: e8402b89cc894a3be0a84c2a905fc101
+      entity_id: 13febcca1216ffc189673489017dbd7f
+      domain: sensor
+      trigger: device
+      above: 100
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 10
+      id: Start
+    - type: power
+      device_id: e8402b89cc894a3be0a84c2a905fc101
+      entity_id: 13febcca1216ffc189673489017dbd7f
+      domain: sensor
+      trigger: device
+      below: 10
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+      id: Stop
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: Start
+          sequence:
+            - action: input_boolean.turn_on
+              metadata: {}
+              data: {}
+              target:
+                entity_id: input_boolean.dryingmachine
+        - conditions:
+            - condition: trigger
+              id:
+                - Stop
+            - condition: state
+              entity_id: input_boolean.dryingmachine
+              state: "on"
+          sequence:
+            - action: input_boolean.turn_off
+              metadata: {}
+              data: {}
+              target:
+                entity_id: input_boolean.dryingmachine
+  mode: single
+  max_exceeded: silent

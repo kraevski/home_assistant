@@ -1,0 +1,84 @@
+type: custom:layout-card
+layout_type: masonry
+cards:
+  - type: custom:mod-card
+    card_mod:
+      style:
+        vacuum-card$: |
+          ha-card {
+            --vc-spacing: 5px;
+          }
+          div.header {
+            display: none;
+          }
+          ha-card .metadata .vacuum-name {
+            font-size: 16px;
+            margin-right: 100px;
+            width: 250px;
+          }
+          ha-card .metadata .status .status-text {
+            color: 
+            {%- if is_state('vacuum.roborock_qrevo_curv', 'docked') -%}
+              orange;
+            {%- else -%}
+              green;
+            {%- endif -%}
+           font-size: 18px;
+           margin-left: 200px;
+           margin-top: -20px;
+          }
+          ha-card .stats .stats-block:nth-child(3) .stats-value{
+            text-transform: capitalize;
+            color: 
+            {%- if is_state('binary_sensor.roborock_qrevo_curv_mop_drying', 'on') -%}
+              green;
+            {%- else -%}
+              white;
+            {%- endif -%}
+          }
+        .: |
+          ha-card {
+            {% if states('sensor.roborock_qrevo_curv_vacuum_error') != 'none' %}
+            animation: breathing-shadow 1.5s infinite alternate ease-in-out;
+            {% else %}
+            animation: none;
+            {% endif %}
+          }
+          @keyframes breathing-shadow {
+            0% {
+              box-shadow: 0px 0px 10px 1px #FF8C00;
+            }
+            100% {
+              box-shadow: 0px 0px 13px 3px #FF8C00;
+            }
+          }
+    card:
+      type: custom:vacuum-card
+      entity: vacuum.roborock_qrevo_curv
+      image: /local/images/qrevocurv.png
+      tap_action: none
+      show_toolbar: false
+      compact_view: true
+      stats:
+        default:
+          - entity_id: sensor.roborock_qrevo_curv_cleaning_progress
+            subtitle: Progress
+            unit: "%"
+          - entity_id: sensor.roborock_qrevo_curv_cleaning_time
+            value_template: "{{ (value | float(0) / 60) | round(0) }}"
+            subtitle: Cleaning Time
+            unit: min
+          - entity_id: binary_sensor.roborock_qrevo_curv_mop_drying
+            subtitle: Mop Drying
+          - entity_id: sensor.roborock_mop_drying_remaining_time
+            subtitle: Remaining
+            unit: min
+visibility:
+  - condition: or
+    conditions:
+      - condition: state
+        entity: binary_sensor.roborock_qrevo_curv_cleaning
+        state: "on"
+      - condition: state
+        entity: binary_sensor.roborock_qrevo_curv_mop_drying
+        state: "on"

@@ -1,0 +1,79 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+
+automation: !include_dir_merge_list entities/automations/
+group: !include_dir_merge_list entities/groups/
+sensor: !include_dir_merge_list entities/sensors/
+template: !include_dir_merge_list entities/templates/
+pyscript: !include pyscript/config.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+api:
+
+logger:
+  default: info
+  logs:
+    custom_components.pyscript: info
+
+lovelace:
+  mode: yaml
+  resources:
+    - url: /hacsfiles/auto-entities/auto-entities.js
+      type: module
+    - url: /hacsfiles/bar-card/bar-card.js
+      type: module
+    - url: /hacsfiles/Bubble-Card/bubble-card.js
+      type: module
+    - url: /hacsfiles/button-card/button-card.js
+      type: module
+    - url: /hacsfiles/circle-sensor-card/circle-sensor-card.js
+      type: module
+    - url: /hacsfiles/clock-weather-card/clock-weather-card.js
+      type: module
+    - url: /hacsfiles/decluttering-card/decluttering-card.js
+      type: module
+    - url: /hacsfiles/flex-table-card/flex-table-card.js
+      type: module
+    - url: /hacsfiles/formulaone-card/formulaone-card.js
+      type: module
+    - url: /hacsfiles/ha-teamtracker-card/ha-teamtracker-card.js
+      type: module
+    - url: /hacsfiles/kiosk-mode/kiosk-mode.js
+      type: module
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/lovelace-card-templater/lovelace-card-templater.js
+      type: module
+    - url: /hacsfiles/lovelace-hourly-weather/hourly-weather.js
+      type: module
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
+      type: module
+    - url: /hacsfiles/lovelace-mushroom/mushroom.js
+      type: module
+    - url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
+      type: module
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
+    - url: /hacsfiles/swipe-card/swipe-card.js
+      type: module
+    - url: /hacsfiles/tabbed-card/tabbed-card.js
+      type: module
+    - url: /hacsfiles/timer-bar-card/timer-bar-card.js
+      type: module
+    - url: /hacsfiles/vacuum-card/vacuum-card.js
+      type: module
+    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
+      type: module
+
+  dashboards:
+    home-dashboard:
+      mode: yaml
+      title: Home
+      icon: mdi:home
+      show_in_sidebar: true
+      filename: ui-lovelace.yaml

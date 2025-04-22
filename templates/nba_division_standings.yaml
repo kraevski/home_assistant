@@ -1,0 +1,32 @@
+### NBA Divisions
+- sensor:
+    - name: NBA Eastern Atlantic
+      unique_id: sensor.nba_eastern_atlantic
+      state: "{{ now() }}"
+      attributes:
+        entries: "{{ state_attr('sensor.nba_standings','children')[0]['children'][0]['standings']['entries'] }}"
+    - name: NBA Eastern Central
+      unique_id: sensor.nba_eastern_central
+      state: "{{ now() }}"
+      attributes:
+        entries: "{{ state_attr('sensor.nba_standings','children')[0]['children'][1]['standings']['entries'] }}"
+    - name: NBA Eastern Southeast
+      unique_id: sensor.nba_eastern_southeast
+      state: "{{ now() }}"
+      attributes:
+        entries: "{{ state_attr('sensor.nba_standings','children')[0]['children'][2]['standings']['entries'] }}"
+    - name: NBA Western Northwest
+      unique_id: sensor.nba_western_northwest
+      state: "{{ now() }}"
+      attributes:
+        entries: "{{ state_attr('sensor.nba_standings','children')[1]['children'][0]['standings']['entries'] }}"
+    - name: NBA Western Pacific
+      unique_id: sensor.nba_western_pacific
+      state: "{{ now() }}"
+      attributes:
+        entries: "{{ state_attr('sensor.nba_standings','children')[1]['children'][1]['standings']['entries'] }}"
+    - name: NBA Western Southwest
+      unique_id: sensor.nba_western_southwest
+      state: "{{ now() }}"
+      attributes:
+        entries: "{{ state_attr('sensor.nba_standings','children')[1]['children'][2]['standings']['entries'] }}"

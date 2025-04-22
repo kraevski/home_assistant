@@ -1,0 +1,37 @@
+- alias: weather_card_weekly_hourly
+  description: ""
+  triggers:
+    - entity_id:
+        - input_boolean.weather_card_weekly
+      to: "on"
+      id: weekly
+      trigger: state
+    - entity_id:
+        - input_boolean.weather_card_hourly
+      to: "on"
+      id: hourly
+      trigger: state
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - weekly
+          sequence:
+            - data: {}
+              target:
+                entity_id:
+                  - input_boolean.weather_card_hourly
+              action: input_boolean.turn_off
+        - conditions:
+            - condition: trigger
+              id:
+                - hourly
+          sequence:
+            - data: {}
+              target:
+                entity_id:
+                  - input_boolean.weather_card_weekly
+              action: input_boolean.turn_off
+  mode: single

@@ -1,0 +1,197 @@
+type: custom:button-card
+icon: mdi:dishwasher
+name: Dishwasher
+tap_action:
+  action: fire-dom-event
+  browser_mod:
+    service: browser_mod.popup
+    data:
+      title: Bosch Dishwasher Machine
+      right_button: Dismiss
+      dismissable: true
+      content:
+        type: custom:layout-card
+        layout_type: custom:masonry-layout
+        layout:
+          width: 500
+        button-background: transparent
+        cards:
+          - type: custom:layout-card
+            layout_type: custom:vertical-layout
+            cards:
+              - type: picture
+                image: /local/images/dishwasher.jpg
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    show_name: true
+                    show_icon: true
+                    show_state: true
+                    entity: >-
+                      binary_sensor.402100517584013483_bsh_common_status_doorstate
+                    icon: mdi:dishwasher
+                    name: Door
+                    tap_action: none
+                    theme: Mushroom
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --ha-card-background: black;
+                          color: var(--primary-color);
+                          --state-binary_sensor-on-color: red;
+                          --state-binary_sensor-off-color: green;
+                        }
+                    styles:
+                      icon:
+                        - height: 40px
+                        - margin-top: 10px
+                        - margin-bottom: 10px
+                  - type: custom:button-card
+                    show_name: true
+                    show_icon: true
+                    show_state: true
+                    tap_action:
+                      action: toggle
+                    entity: >-
+                      switch.402100517584013483_bsh_common_setting_powerstate
+                    icon: mdi:power
+                    name: Power
+                    theme: Mushroom
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --ha-card-background: black;
+                          color: var(--primary-color);
+                          --state-switch-on-color: green;
+                          --state-switch-off-color: lightsteelblue;
+                        }
+                    styles:
+                      icon:
+                        - height: 40px
+                        - margin-top: 10px
+                        - margin-bottom: 10px
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:button-card
+                        entity: button.402100517584013483_start_pause
+                        name: |
+                          [[[
+                            if (states['sensor.402100517584013483_bsh_common_status_operationstate'].state == 'BSH.Common.EnumType.OperationState.Run') {
+                              return "Stop";
+                            } else {
+                              return "Start";
+                            }
+                          ]]]
+                        show_state: true
+                        tap_action:
+                          action: toggle
+                        icon: |
+                          [[[ 
+                            if (states['sensor.402100517584013483_bsh_common_status_operationstate'].state === 'BSH.Common.EnumType.OperationState.Run') {
+                              return 'mdi:dishwasher-alert';
+                            } else {
+                              return 'mdi:play';
+                            }
+                          ]]]
+                        state_display: |
+                          [[[ 
+                            if (states['sensor.402100517584013483_bsh_common_status_operationstate'].state === 'BSH.Common.EnumType.OperationState.Run') {
+                              return 'Running';
+                            } else {
+                              return 'Idle';
+                            }
+                          ]]]
+                        styles:
+                          card:
+                            - background-color: black
+                          icon:
+                            - color: |
+                                [[[ 
+                                  if (states['sensor.402100517584013483_bsh_common_status_operationstate'].state === 'BSH.Common.EnumType.OperationState.Run') {
+                                    return 'blue';
+                                  } else {
+                                    return 'green';
+                                  }
+                                ]]]
+                            - height: 40px
+                            - margin-top: 10px
+                            - margin-bottom: 5px
+                          name:
+                            - color: var(--primary-color)
+                            - margin-top: 0px
+                            - margin-bottom: 5px
+                          state:
+                            - font-size: 16px
+                            - color: gray
+                            - margin-bottom: 5px
+              - type: custom:layout-card
+                layout_type: custom:grid-layout
+                layout:
+                  grid-template-columns: 50% 50%
+                  width: 400
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: >-
+                      Rinse aid is {{ 'Empty' if
+                      is_state('sensor.sdomiialna_mashina_rinse_aid_nearly_empty',
+                      'present') else 'OK' }}
+                    icon: mdi:spray-bottle
+                    tap_action: none
+                    icon_color: >-
+                      {% if
+                      is_state('sensor.sdomiialna_mashina_rinse_aid_nearly_empty',
+                      'present') %}
+                        red         
+                      {% else %}
+                        green
+                      {% endif %}
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --ha-card-background: black;
+                        }
+                  - type: custom:mushroom-template-card
+                    primary: >-
+                      Salt is {{ 'Empty' if
+                      is_state('sensor.sdomiialna_mashina_salt_nearly_empty',
+                      'present') else 'OK' }}
+                    icon: mdi:shaker
+                    tap_action: none
+                    icon_color: >-
+                      {% if
+                      is_state('sensor.sdomiialna_mashina_salt_nearly_empty',
+                      'present') %}
+                        red         
+                      {% else %}
+                        green
+                      {% endif %}
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --ha-card-background: black;
+                        }
+              - type: entities
+                entities:
+                  - entity: select.402100517584013483_programs
+                    name: Choose Program
+              - type: entities
+                entities:
+                  - entity: >-
+                      sensor.402100517584013483_bsh_common_status_operationstate
+                    secondary_info: last-changed
+                    icon: mdi:state-machine
+                    name: Operation status
+                  - entity: >-
+                      sensor.402100517584013483_bsh_common_option_programprogress
+                    icon: mdi:timer-cog
+                    name: Operation done
+                  - entity: >-
+                      switch.402100517584013483_dishcare_dishwasher_option_variospeedplus
+                    name: SpeedPerfect+
+                  - entity: >-
+                      switch.402100517584013483_dishcare_dishwasher_option_ecodry
+                    name: EfficientDry (automatically open the door)

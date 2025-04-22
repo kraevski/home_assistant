@@ -1,0 +1,211 @@
+type: custom:layout-card
+layout_type: custom:masonry-layout
+layout:
+  width: 350
+overlay-margin: 2em
+cards:
+  - type: custom:bubble-card
+    card_type: button
+    entity: light.dining_table
+    icon: mdi:table-furniture
+    button_type: slider
+    card_layout: normal
+    slider_live_update: true
+    sub_button:
+      - name: Brightness
+        icon: mdi:fridge-outline
+        show_icon: false
+        show_background: false
+        show_attribute: true
+        attribute: brightness
+        tap_action:
+          action: none
+        double_tap_action:
+          action: none
+        hold_action:
+          action: none
+      - name: Toggle button
+        icon: mdi:lightbulb
+        tap_action:
+          action: toggle
+    styles: |
+      * { 
+        font-size: 16px !important;
+        --bubble-button-border-radius: 15px
+      }
+      .bubble-range-fill {
+        background: rgb(190, 125, 7) !important;
+        opacity: 1 !important;
+      }
+      .bubble-sub-button-1 {
+        color: white;
+      }
+      .bubble-sub-button-2 {
+        height: 45px !important;
+        min-width: 45px !important;
+        color: ${state === 'off' ? 'white' : 'orange'} !important;
+      }
+      .background-on {
+        background-color: white;
+      }
+    tap_action:
+      action: none
+    double_tap_action:
+      action: none
+    hold_action:
+      action: none
+    use_accent_color: false
+    force_icon: false
+    show_name: true
+    show_state: false
+    show_attribute: false
+  - type: custom:bubble-card
+    card_type: button
+    entity: light.tv_area
+    icon: mdi:television
+    button_type: slider
+    card_layout: normal
+    sub_button:
+      - name: Brightness
+        icon: mdi:fridge-outline
+        show_icon: false
+        show_background: false
+        show_attribute: true
+        attribute: brightness
+        tap_action:
+          action: none
+        double_tap_action:
+          action: none
+        hold_action:
+          action: none
+      - name: Toggle button
+        icon: mdi:lightbulb
+        tap_action:
+          action: toggle
+    styles: |
+      * { 
+        font-size: 16px !important;
+        --bubble-button-border-radius: 15px
+      }
+      .bubble-range-fill {
+        background: rgb(190, 125, 7) !important;
+        opacity: 1 !important;
+      }
+      .bubble-sub-button-1 {
+        color: white;
+      }
+      .bubble-sub-button-2 {
+        height: 45px !important;
+        min-width: 45px !important;
+        color: ${state === 'off' ? 'white' : 'orange'} !important;
+      }
+      .background-on {
+        background-color: white;
+      }
+    tap_action:
+      action: none
+    double_tap_action:
+      action: none
+    hold_action:
+      action: none
+    slider_live_update: true
+  - type: custom:bubble-card
+    card_type: button
+    entity: light.light
+    icon: mdi:bed-double-outline
+    button_type: slider
+    card_layout: normal
+    sub_button:
+      - name: Brightness
+        icon: mdi:fridge-outline
+        show_icon: false
+        show_background: false
+        show_attribute: true
+        attribute: brightness
+        tap_action:
+          action: none
+        double_tap_action:
+          action: none
+        hold_action:
+          action: none
+      - name: Toggle button
+        icon: mdi:lightbulb
+        tap_action:
+          action: toggle
+    styles: |
+      * { 
+        font-size: 16px !important;
+        --bubble-button-border-radius: 15px
+      }
+      .bubble-range-fill {
+        background: rgb(190, 125, 7) !important;
+        opacity: 1 !important;
+      }
+      .bubble-sub-button-1 {
+        color: white;
+      }
+      .bubble-sub-button-2 {
+        height: 45px !important;
+        min-width: 45px !important;
+        color: ${state === 'off' ? 'white' : 'orange'} !important;
+      }
+      .background-on {
+        background-color: white;
+      }
+    tap_action:
+      action: none
+    double_tap_action:
+      action: none
+    hold_action:
+      action: none
+    slider_live_update: true
+  - type: custom:bubble-card
+    card_type: button
+    entity: light.light_2
+    icon: mdi:teddy-bear
+    button_type: slider
+    card_layout: normal
+    sub_button:
+      - name: Brightness
+        icon: mdi:fridge-outline
+        show_icon: false
+        show_background: false
+        show_attribute: true
+        attribute: brightness
+        tap_action:
+          action: none
+        double_tap_action:
+          action: none
+        hold_action:
+          action: none
+      - name: Toggle button
+        icon: mdi:lightbulb
+        tap_action:
+          action: toggle
+    styles: |
+      * { 
+        font-size: 16px !important;
+        --bubble-button-border-radius: 15px
+      }
+      .bubble-range-fill {
+        background: rgb(190, 125, 7) !important;
+        opacity: 1 !important;
+      }
+      .bubble-sub-button-1 {
+        color: white;
+      }
+      .bubble-sub-button-2 {
+        height: 45px !important;
+        min-width: 45px !important;
+        color: ${state === 'off' ? 'white' : 'orange'} !important;
+      }
+      .background-on {
+        background-color: white;
+      }
+    tap_action:
+      action: none
+    double_tap_action:
+      action: none
+    hold_action:
+      action: none
+    slider_live_update: true

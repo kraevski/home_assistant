@@ -1,0 +1,52 @@
+- alias: WashingMachine
+  description: ""
+  triggers:
+    - type: power
+      device_id: 6d71414c602802c31ecb40ed135cab0b
+      entity_id: sensor.washing_machine_plug_power
+      domain: sensor
+      trigger: device
+      above: 6
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+      id: Start
+    - type: power
+      device_id: 6d71414c602802c31ecb40ed135cab0b
+      entity_id: sensor.washing_machine_plug_power
+      domain: sensor
+      trigger: device
+      below: 5
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+      id: Stop
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: Start
+          sequence:
+            - action: input_boolean.turn_on
+              metadata: {}
+              data: {}
+              target:
+                entity_id: input_boolean.washingmachine
+        - conditions:
+            - condition: trigger
+              id:
+                - Stop
+            - condition: state
+              entity_id: input_boolean.washingmachine
+              state: "on"
+          sequence:
+            - action: input_boolean.turn_off
+              metadata: {}
+              data: {}
+              target:
+                entity_id: input_boolean.washingmachine
+  mode: single
+  max_exceeded: silent

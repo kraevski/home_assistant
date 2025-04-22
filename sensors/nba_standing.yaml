@@ -1,0 +1,8 @@
+- platform: rest
+  scan_interval: 36000
+  name: NBA Standings
+  unique_id: sensor.nba_standings
+  resource: https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?seasontype=2&type=0&level=3
+  value_template: "{{ now() }}"
+  json_attributes:
+    - children

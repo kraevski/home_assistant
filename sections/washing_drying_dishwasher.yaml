@@ -1,0 +1,197 @@
+type: grid
+cards:
+  - type: picture-elements
+    image: /local/images/washingmachine_big2.jpg
+    card_mod:
+      style: |
+        ha-card {
+          height: 150px !important;
+        }
+    visibility:
+      - condition: state
+        entity: input_boolean.washingmachine
+        state: "on"
+    elements:
+      - type: state-label
+        entity: input_boolean.washingmachine
+        tap_action: none
+        style:
+          right: "-5%"
+          top: 6.5%
+          color: "#2bde1b"
+          font-size: 9px
+      - type: custom:mushroom-template-card
+        primary: >-
+          {{ (as_timestamp(now()) -
+          as_timestamp(states['input_boolean.washingmachine']['last_changed']))
+          | timestamp_custom("%H:%M:%S", false) }}
+        style:
+          left: 50%
+          top: 50%
+        card_mod:
+          style: |
+            ha-card {
+              border: none !important;
+              --card-primary-font-size: 17px;
+              --card-primary-color: orange;
+            }
+      - type: custom:mushroom-template-card
+        primary: >-
+          {{ 'Turned Off' if states('sensor.washing_machine_plug_power') ==
+          'undefined' or states('sensor.washing_machine_plug_power') ==
+          'unknown' else  'Heating' if
+          states('sensor.washing_machine_plug_power') | float > 500 else
+          'Spinning' if states('sensor.washing_machine_plug_power') | float
+          > 150 else  'Washing' if
+          states('sensor.washing_machine_plug_power') | float > 10 else 
+          'Idle' if states('sensor.washing_machine_plug_power') | float > 1
+          else  'Completed' }}
+        style:
+          left: 50%
+          top: 92%
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              --card-primary-font-size: 18px;
+              --card-primary-color: black;
+              font-family: "Gill Sans", sans-serif;
+            }
+  - type: picture-elements
+    image: /local/images/dryingmachine_big.jpg
+    card_mod:
+      style: |
+        ha-card {
+          height: 150px !important;
+        }
+    visibility:
+      - condition: state
+        entity: input_boolean.dryingmachine
+        state: "on"
+    elements:
+      - type: custom:mushroom-template-card
+        primary: •
+        entity: input_boolean.dryingmachine
+        tap_action: none
+        style:
+          right: 19%
+          top: 6.5%
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              border: none !important;
+              --card-primary-font-size: 38px;
+              --card-primary-color: green;
+            }
+      - type: custom:mushroom-template-card
+        primary: >-
+          {{ (as_timestamp(now()) -
+          as_timestamp(states['input_boolean.dryingmachine']['last_changed']))
+          | timestamp_custom("%H:%M:%S", false) }}
+        style:
+          left: 50%
+          top: 40%
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              border: none !important;
+              --card-primary-font-size: 18px;
+              --card-primary-color: orange;
+            }
+      - type: custom:mushroom-template-card
+        primary: >-
+          {{ 'Drying' if states('input_boolean.dryingmachine') == 'on' else
+          'Completed' }}
+        style:
+          left: 50%
+          top: 75%
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              --card-primary-font-size: 18px;
+              --card-primary-color: black;
+              font-family: "Gill Sans", sans-serif;
+            }
+  - type: picture-elements
+    image: /local/images/dishwasher_full.jpg
+    card_mod:
+      style: |
+        ha-card {
+          height: 150px !important;
+        }
+    visibility:
+      - condition: state
+        entity: sensor.sdomiialna_mashina_operation_state
+        state: run
+    elements:
+      - type: custom:mushroom-template-card
+        primary: >-
+          {{ 'Finished' if
+          states('sensor.sdomiialna_mashina_program_finish_time') ==
+          'unavailable' else
+          (as_timestamp(states('sensor.sdomiialna_mashina_program_finish_time'))
+          - as_timestamp(now())) | timestamp_custom("%H:%M:%S", false) }}
+        tap_action: none
+        style:
+          left: 50%
+          top: 6.5%
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              border: none !important;
+              --card-primary-font-size: 10px;
+              --card-primary-color: orange;
+            }
+      - type: custom:circle-sensor-card
+        min: 0
+        max: 100
+        entity: sensor.402100517584013483_bsh_common_option_programprogress
+        font_style:
+          font-size: 20px
+          text-align: center
+          color: black
+        show_card: false
+        stroke_width: 20
+        stroke_bg_width: 15
+        stroke_bg_color: "#000000"
+        fill: none
+        color_stops:
+          "1": "#ffb31c"
+          "30": "#ffe725"
+          "50": "#eeee00"
+          "70": "#77a500"
+          "99": "#397f00"
+        style:
+          left: 18%
+          top: 20%
+          width: 65px
+          height: 65px
+          transform: none
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              border: none !important;
+            }
+      - type: custom:mushroom-template-card
+        primary: "Active Program:"
+        secondary: "{{state_translated('sensor.402100517584013483_selected_program')}}"
+        multiline_secondary: true
+        style:
+          left: 50%
+          top: 80%
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              --card-primary-font-size: 12px;
+              --card-primary-color: black;
+              font-family: "Gill Sans", sans-serif;
+              --card-secondary-color: #07007f;
+              --card-secondary-font-size: 14px;
+              --card-secondary-text-align: center !important;
+            

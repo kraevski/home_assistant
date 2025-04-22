@@ -1,0 +1,320 @@
+decluttering_templates:
+  nba_settings:
+    card:
+      type: custom:flex-table-card
+      title: '[[title]]'
+      css:
+        table+: 'padding: 0px; width: 1600px;'
+        tbody tr td:first-child: 'width: 2%;'
+        tbody tr td:nth-child(2): 'width: 20%;'
+        tbody tr td:nth-child(n+3): 'width: 6%;'
+        tbody tr:hover: 'background-color: green!important; color:white!important;'
+        tbody tr td:nth-child(5): 'background-color: green; color: white;'
+      card_mod:
+        style:
+          .: |
+            ha-card {
+              overflow: auto;
+              }
+          $: |
+            .card-header {
+               padding-top: 6px!important;
+               padding-bottom: 4px!important;
+               font-size: 14px!important;
+               line-height: 14px!important;
+               font-weight: bold!important;
+             }
+      sort_by: entries+
+      entities:
+        include: '[[entity]]'
+      columns:
+        - hidden: true
+          data: entries
+          modify: '[[sort]]'
+        - name: C
+          data: entries
+          modify: >-
+            if(typeof x.stats.find(y=>y.abbreviation == 'CLINCH') !==
+            'undefined' ){x.stats.find(y=>y.abbreviation ==
+            'CLINCH').displayValue}else{'-'}
+        - name: Team
+          data: entries
+          modify: >-
+            '<div><img src="' + x.team.logos[0].href + '" style="height:
+            20px;vertical-align:middle;">&nbsp;' + x.team.displayName + '</div>'
+        - name: W
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'W').displayValue
+        - name: L
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'L').displayValue
+        - name: GB
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'GB').displayValue
+        - name: HOME
+          data: entries
+          modify: x.stats.find(y=>y.shortDisplayName == 'HOME').displayValue
+        - name: AWAY
+          data: entries
+          modify: x.stats.find(y=>y.shortDisplayName == 'AWAY').displayValue
+        - name: DIV
+          data: entries
+          modify: x.stats.find(y=>y.shortDisplayName == 'DIV').displayValue
+        - name: CONF
+          data: entries
+          modify: x.stats.find(y=>y.shortDisplayName == 'CONF').displayValue
+        - name: PPG
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'PPG').displayValue
+        - name: OPP PPG
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'OPP PPG').displayValue
+        - name: DIFF
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'DIFF').displayValue
+        - name: STRK
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'STRK').displayValue
+        - name: L10
+          data: entries
+          modify: x.stats.find(y=>y.abbreviation == 'L10').displayValue
+  game_stats:
+    card:
+      type: custom:auto-entities
+      unique: true
+      show_empty: false
+      card:
+        type: custom:layout-card
+        layout_type: masonry
+        width: 200px
+        max-columns: 5
+      card_param: cards
+      filter:
+        template: |
+          {%- for team in integration_entities("teamtracker") -%}
+            {%- if state_attr(team, "league") == "[[sport]]" -%}
+            {%- if states(team) == "[[status]]" -%}
+            {%- if state_attr(team, "team_homeaway") == "home" -%}
+              {{{"type": "custom:teamtracker-card",
+                "entity": team,
+                "home_side": "left",
+                "show_rank": "true",
+                "card_title": state_attr(team, "league"),
+                "show_timeouts": "false",
+                "team_url": "more-info",
+                "opponent_url": "more-info",
+                "card_mod": {
+                  "style": {
+                    "": ".record { display: none;} .line { display: none;} .bottom-clickable {display: none;} .card div {margin-top: -5px !important; margin-bottom: -3px  !important;}"
+                }}
+              }}},
+            {%- endif -%}
+            {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        exclude:
+          - entity_id: '*team_tracker*'
+      sort:
+        method: attribute
+        attribute: date
+  nba_view:
+    card:
+      type: custom:mod-card
+      card_mod:
+        style:
+          tabbed-card $: |
+            mwc-tab {
+              background: var(--ha-card-background, var(--card-background-color, white) );
+              border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
+              border-width: 2px;
+              border-top-left-radius: 20px;
+              border-top-right-radius: 20px;
+              border-style: solid;
+              overflow: hidden;
+              width: 25%;
+            }
+            mwc-tab[active] {
+              background: #EBFFD8 !important;
+            }
+      card:
+        type: custom:tabbed-card
+        styles:
+          '--mdc-theme-primary': green
+          '--mdc-tab-text-label-color-default': silver
+          '--mdc-typography-button-font-size': 12px
+        tabs:
+          - attributes:
+              label: NBA
+              icon: mdi:basketball
+            card:
+              type: custom:mod-card
+              card_mod:
+                style:
+                  tabbed-card $: |
+                    mwc-tab {
+                      background: var(--ha-card-background, var(--card-background-color, white) );
+                      border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
+                      border-width: 2px;
+                      border-top-left-radius: 20px;
+                      border-top-right-radius: 20px;
+                      border-style: solid;
+                      overflow: hidden;
+                      width: 25%;
+                    }
+                    mwc-tab[active] {
+                      background: #EBFFD8 !important;
+                    }
+              card:
+                type: custom:tabbed-card
+                styles:
+                  '--mdc-theme-primary': green
+                  '--mdc-tab-text-label-color-default': silver
+                  '--mdc-typography-button-font-size': 12px
+                tabs:
+                  - attributes:
+                      label: Standings
+                      icon: mdi:ballot
+                    card:
+                      type: custom:mod-card
+                      card_mod:
+                        style:
+                          tabbed-card $: |
+                            mwc-tab {
+                              background: var(--ha-card-background, var(--card-background-color, white) );
+                              border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
+                              border-width: 2px;
+                              border-top-left-radius: 20px;
+                              border-top-right-radius: 20px;
+                              border-style: solid;
+                              overflow: hidden;
+                              width: 25%;
+                            }
+                            mwc-tab[active] {
+                              background: #EBFFD8 !important;
+                            }
+                      card:
+                        type: custom:tabbed-card
+                        styles:
+                          '--mdc-theme-primary': green
+                          '--mdc-tab-text-label-color-default': silver
+                          '--mdc-typography-button-font-size': 12px
+                        tabs:
+                          - attributes:
+                              label: Conference
+                            card:
+                              type: custom:stack-in-card
+                              mode: vertical
+                              cards:
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Eastern Conference
+                                    - entity: sensor.nba_eastern_*
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Western Conference
+                                    - entity: sensor.nba_western_*
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                          - attributes:
+                              label: Divisional
+                            card:
+                              type: custom:stack-in-card
+                              mode: vertical
+                              cards:
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Eastern Conference Atlantic
+                                    - entity: sensor.nba_eastern_atlantic
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Eastern Conference Central
+                                    - entity: sensor.nba_eastern_central
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Eastern Conference Southeast
+                                    - entity: sensor.nba_eastern_southeast
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Western Conference Northwest
+                                    - entity: sensor.nba_western_northwest
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Western Conference Pacific
+                                    - entity: sensor.nba_western_pacific
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                                - type: custom:decluttering-card
+                                  template: nba_settings
+                                  variables:
+                                    - title: Western Conference Southwest
+                                    - entity: sensor.nba_western_southwest
+                                    - sort: >-
+                                        x.stats.find(y=>y.abbreviation ==
+                                        'GB').value
+                          - attributes:
+                              label: Overall
+                            card:
+                              type: custom:decluttering-card
+                              template: nba_settings
+                              variables:
+                                - title: Overall
+                                - entity: sensor.nba_*_*
+                                - sort: >-
+                                    x.stats.find(y=>y.abbreviation ==
+                                    'GB').value
+                          - attributes:
+                              label: Playoffs
+                            card:
+                              type: markdown
+                              content: coming soon!
+                  - attributes:
+                      label: Postgame
+                      icon: mdi:basketball
+                    card:
+                      type: custom:decluttering-card
+                      template: game_stats
+                      variables:
+                        - sport: NBA
+                        - status: POST
+                  - attributes:
+                      label: Live
+                      icon: mdi:basketball-hoop
+                    card:
+                      type: custom:decluttering-card
+                      template: game_stats
+                      variables:
+                        - sport: NBA
+                        - status: IN
+                  - attributes:
+                      label: Pregame
+                      icon: mdi:account-details
+                    card:
+                      type: custom:decluttering-card
+                      template: game_stats
+                      variables:
+                        - sport: NBA
+                        - status: PRE

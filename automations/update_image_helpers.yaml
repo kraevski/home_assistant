@@ -1,0 +1,28 @@
+- alias: UpdateImageHelpers
+  description: ""
+  triggers:
+    - trigger: time_pattern
+      hours: /6
+  actions:
+    - action: pyscript.update_image_helpers
+      metadata: {}
+      data: {}
+    - action: downloader.download_file
+      metadata: {}
+      data:
+        overwrite: true
+        filename: jameswebb.jpg
+        url: "{{ states('input_text.downloadimageurl') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ states('input_text.articleurl') != 'missing' }}"
+          sequence:
+            - action: downloader.download_file
+              metadata: {}
+              data:
+                overwrite: true
+                subdir: articles
+                filename: article_nasa.html
+                url: "{{ states('input_text.articleurl') }}"
+  mode: single

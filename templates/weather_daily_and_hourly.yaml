@@ -1,0 +1,57 @@
+- trigger:
+    - trigger: time_pattern
+      minutes: /30
+  action:
+    - action: weather.get_forecasts
+      data:
+        type: hourly
+      target:
+        entity_id: weather.forecast_home
+      response_variable: hourly
+  sensor:
+    - name: Temperature forecast hourly
+      unique_id: temperature_forecast_hourly
+      state: "{{ states('weather.forecast_home') }}"
+      attributes:
+        temperature: "{{ state_attr('weather.forecast_home', 'temperature') }}"
+        dew_point: "{{ state_attr('weather.forecast_home', 'dew_point') }}"
+        temperature_unit: "{{ state_attr('weather.forecast_home', 'temperature_unit') }}"
+        humidity: "{{ state_attr('weather.forecast_home', 'humidity') }}"
+        cloud_coverage: "{{ state_attr('weather.forecast_home', 'cloud_coverage') }}"
+        pressure: "{{ state_attr('weather.forecast_home', 'pressure') }}"
+        pressure_unit: "{{ state_attr('weather.forecast_home', 'pressure_unit') }}"
+        wind_bearing: "{{ state_attr('weather.forecast_home', 'wind_bearing') }}"
+        wind_speed: "{{ state_attr('weather.forecast_home', 'wind_speed') }}"
+        wind_speed_unit: "{{ state_attr('weather.forecast_home', 'wind_speed_unit') }}"
+        visibility_unit: "{{ state_attr('weather.forecast_home', 'visibility_unit') }}"
+        precipitation_unit: "{{ state_attr('weather.forecast_home', 'precipitation_unit') }}"
+        forecast: "{{ hourly['weather.forecast_home'].forecast }}"
+
+- trigger:
+    - trigger: time_pattern
+      hours: /1
+  action:
+    - action: weather.get_forecasts
+      data:
+        type: daily
+      target:
+        entity_id: weather.forecast_home
+      response_variable: daily
+  sensor:
+    - name: Temperature forecast daily
+      unique_id: temperature_forecast_daily
+      state: "{{ states('weather.forecast_home') }}"
+      attributes:
+        temperature: "{{ state_attr('weather.forecast_home', 'temperature') }}"
+        dew_point: "{{ state_attr('weather.forecast_home', 'dew_point') }}"
+        temperature_unit: "{{ state_attr('weather.forecast_home', 'temperature_unit') }}"
+        humidity: "{{ state_attr('weather.forecast_home', 'humidity') }}"
+        cloud_coverage: "{{ state_attr('weather.forecast_home', 'cloud_coverage') }}"
+        pressure: "{{ state_attr('weather.forecast_home', 'pressure') }}"
+        pressure_unit: "{{ state_attr('weather.forecast_home', 'pressure_unit') }}"
+        wind_bearing: "{{ state_attr('weather.forecast_home', 'wind_bearing') }}"
+        wind_speed: "{{ state_attr('weather.forecast_home', 'wind_speed') }}"
+        wind_speed_unit: "{{ state_attr('weather.forecast_home', 'wind_speed_unit') }}"
+        visibility_unit: "{{ state_attr('weather.forecast_home', 'visibility_unit') }}"
+        precipitation_unit: "{{ state_attr('weather.forecast_home', 'precipitation_unit') }}"
+        forecast: "{{ daily['weather.forecast_home'].forecast }}"

@@ -1,0 +1,14 @@
+- alias: PrinterLowToner
+  description: Toner under 30% in Brother printer
+  triggers:
+    - entity_id: sensor.brother_dcp_l2622dw_bk
+      below: 30
+      trigger: numeric_state
+  actions:
+    - data:
+        message:
+          "{{ state_attr('sensor.brother_dcp_l2622dw', 'info') }} Toner is
+          at {{ trigger.to_state.state }} %"
+        title: Printer Toner is low
+      action: notify.mobile_app_sm_f956b
+  mode: single

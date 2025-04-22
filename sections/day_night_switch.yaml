@@ -1,0 +1,20 @@
+type: custom:mushroom-template-card
+entity: input_boolean.night_lights
+picture: >-
+  {{ '/local/images/day.png' if states(entity) == "off" else
+  '/local/images/night.png' }}
+tap_action:
+  action: call-service
+  service: script.nightmodelights
+card_mod:
+  style:
+    .: |
+      ha-card { 
+        background: none;
+        margin-left: auto;
+        --icon-size: 135px;
+      --primary-text-color: orange;
+      --secondary-text-color: orange; 
+        --card-primary-font-size: 14px;
+        --card-secondary-font-size: 18px;
+      } 
