@@ -1,0 +1,1292 @@
+type: custom:layout-card
+layout_type: masonry
+layout: {}
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        layout_type: masonry
+        layout: {}
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                icon: null
+                primary: |
+                  {{ now().strftime('%d %b %Y') }}
+                picture: null
+                entity: entity.entity
+                fill_container: false
+                multiline_secondary: true
+                layout: horizontal
+                card_mod:
+                  style:
+                    mushroom-state-info$: |
+                      .primary {
+                        font-size: 30px !important;
+                        font-weight: bold !important;
+                        margin-left: -15px;     
+                        margin-top: 5px;  
+                        width: 70px !important; 
+                        font-family: "Formula1-regular";
+                        text-align: left;             
+                        overflow: visible !important;     
+                        z-index:1;        
+                        text-indent: 5px;     
+                      }
+                    .: |
+                      ha-card {       
+                        box-shadow: none !important;
+                        background-color: transparent;     
+                      }       
+                      :host {
+                        height: 60px !important;
+                        --mush-icon-size: 100px;
+                        background: transparent !important;  
+                        margin-left: -1px !important;   
+                        margin-top: 0px !important;  
+                        margin-right: Auto;   
+                      }    
+              - type: custom:mushroom-chips-card
+                card_mod:
+                  style: |
+                    :host {
+                      margin-top: 5px !important;
+                      --ha-card-background: white;
+                    }
+                    ha-card {
+                      --card-primary-color: black;
+                      --chip-text-color: black;  
+                      font-family: "Formula1-regular";
+                      --ha-card-border-width: 0;
+                      --chip-icon-size: 30px;
+                     --chip-background: none;  
+                     --chip-border: none !important;
+                     --chip-box-shadow: none;
+                     --chip-font-size: 14px;                         
+                      --chip-spacing: 0px;
+                    }    
+                chips:
+                  - type: template
+                    icon: mdi:newspaper-variant-multiple
+                    icon_color: amber
+                    content: null
+                    entity: input_boolean.weather_report
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      target:
+                        entity_id: input_boolean.weather_report
+                  - type: template
+                    icon: mdi:water-percent
+                    icon_color: blue
+                    entity: input_boolean.weather_animations
+                    content: "{{ states('sensor.openweathermap_humidity') }}%"
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      target:
+                        entity_id: input_boolean.weather_animations
+                alignment: end
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-border-width: 0;
+              box-shadow: none;
+              background: transparent;
+            }
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        layout_type: masonry
+        layout: {}
+        cards:
+          - type: conditional
+            conditions:
+              - entity: input_boolean.weather_report
+                state: "off"
+            card:
+              type: horizontal-stack
+              cards:
+                - type: custom:mushroom-template-card
+                  icon: null
+                  primary: |
+                    {{ states('sensor.openweathermap_temperature')|int}}°
+                  picture: null
+                  secondary: |
+                    {{ state_translated('sensor.openweathermap_condition') }}
+                  entity: entity.entity
+                  fill_container: false
+                  multiline_secondary: true
+                  layout: horizontal
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          --card-primary-color: white;
+                          font-size: 100px !important;
+                          font-weight: bold !important;
+                          margin-left: 50px;
+                          margin-top: 40px;         
+                          overflow: visible !important;    
+                          font-weight: 900 !important; 
+                          text-indent: 0px;     
+                          -webkit-text-stroke: 1px black;
+                          text-align: center !important;
+                        }
+                        .secondary {     
+                          font-size: 28px !important;
+                          margin-top: 40px !important;
+                          margin-right: 0px !important;
+                          font-weight: 900 !important; 
+                          padding: 20px;
+                          overflow: hidden !important;  
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                          text-align: center;
+                          line-height: 40px !important;
+                          -webkit-text-stroke: 0.5px black;
+                          position: relative;
+                          top: -10px;
+                        } 
+                      .: |
+                        ha-card {   
+                          background-color: rgba(252, 252, 252, 0.1); 
+                          --ha-card-border-width: 0;
+                          box-shadow: none !important;
+                          background-color: transparent;     
+                        }       
+                        :host {
+                          height: 220px !important;
+                          --mush-icon-size: 100px;
+                          background: transparent !important;  
+                          margin-left: -1px !important;   
+                        }    
+          - type: conditional
+            conditions:
+              - entity: input_boolean.weather_report
+                state: "on"
+            card:
+              type: horizontal-stack
+              cards:
+                - type: markdown
+                  content: >-
+                    <h4><p>{% set state =
+                    states('sensor.openweathermap_feels_like_temperature') %} 
+                    {% if state | float < -10 %}
+                     Навън е <font color=orange>кучи студ</font>,
+                    {% elif state | float < 0 %}
+                     Навън е <font color=orange>доста студено</font>,
+                    {% elif state | float < 5 %}
+                     Навън е <font color=orange>студено</font>,
+                    {% elif state | float < 10 %}
+                     Вземи си якето,
+                    {% elif state | float < 15 %}
+                     Навън е <font color=orange>приятно</font>,
+                    {% elif state | float < 20 %}
+                     Навън е <font color=orange>хубаво време</font>,
+                    {% elif state | float < 25 %}
+                     Навън е <font color=orange>топло</font>,
+                    {% elif state | float < 30 %}
+                     Навън е <font color=orange>много топло</font>,
+                    {% elif state | float < 35 %}
+                     Навън е <font color=orange>адска жега</font>,
+                    {% elif state | float < 40 %}
+                     Навън е <font color=orange>брутална жега</font>,
+                    {% else %} 
+                     Навън <font color=orange>ще пукнеш от жега</font>,
+                    {%- endif %} температурата е <font
+                    color=orange>{{states('sensor.openweathermap_temperature') |
+                    round(1)}}°C</font>. Усеща се като <font color=
+                    orange>{{states('sensor.openweathermap_feels_like_temperature')
+                    | round(1)}}°C</font>, а скоростта на вятъра е <font color=
+                    orange>{{states('sensor.openweathermap_wind_speed') |
+                    int}}</font> км/ч.&nbsp; {%- set precipation_next12h =
+                    states('sensor.weather_next_12_hours_rain_probability') -%}
+                    {%if precipation_next12h == 0 %} Не се очаква да вали в
+                    следващите <u>12 часа</u>.   {% else%} 
+                      {%- if precipation_next12h < '2.5' -%}
+                        {%- set rain_next12h = 'слаб' -%}
+                      {%- elif precipation_next12h < '10' -%}
+                        {%- set rain_next12h = 'умерен' -%}
+                      {%- elif precipation_next12h < '50' -%}
+                        {%- set rain_next12h = 'силен' -%}
+                      {% else %}
+                        {%- set rain_next12h = 'проливен' -%}
+                      {%- endif -%}
+                     Има възможност за <font color=orange>{{rain_next12h}} дъжд</font> в следващите 12 часа. {%- endif -%}</p></h1> 
+                    <h4><p><u>Утре</u> времето ще бъде <font color= orange>{{
+                    state_attr('sensor.temperature_forecast_daily',
+                    'forecast')[1].condition }}</font> с максимална температура
+                    <font color= orange>{{
+                    state_attr('sensor.temperature_forecast_daily',
+                    'forecast')[1].temperature}}°C</font> и минимална <font
+                    color= orange>{{
+                    state_attr('sensor.temperature_forecast_daily',
+                    'forecast')[1].templow}}°C</font>. Влажността ще бъде <font
+                    color= orange>{{
+                    state_attr('sensor.temperature_forecast_daily',
+                    'forecast')[0].humidity | int }} %</font>, а скоростта на
+                    вятъра около <font color= orange>{{
+                    state_attr('sensor.temperature_forecast_daily',
+                    'forecast')[0].wind_speed | int }}</font> км/ч. <br>{%- set
+                    precipation =
+                    state_attr('sensor.temperature_forecast_daily','forecast')[1].precipitation
+                    -%} {% if precipation == 0  %} Не се очакват валежи. {% else
+                    %}
+                      {%- if precipation < 2.5 -%}
+                        {%- set rain = 'слаб' -%}
+                      {%- elif precipation < 10 -%}
+                        {%- set rain = 'умерен' -%}
+                      {%- elif precipation < 50 -%}
+                        {%- set rain = 'силен' -%}
+                      {% else %}
+                        {%- set rain = 'проливен' -%}
+                      {%- endif -%}
+                     Очаква се <font color=orange>{{rain}} дъжд</font> от <font color= orange>{{state_attr('sensor.temperature_forecast_daily','forecast')[1].precipitation }} мм/кв.м.</font>
+                    {%- endif -%} </p>
+                  card_mod:
+                    style: |
+                      ha-card {  
+                        background-color: rgba(252, 252, 252, 0.1); 
+                        background: none;  
+                        --primary-text-color: white;
+                        font-size: 14px;
+                        box-shadow: none !important;
+                      }  
+                      :host {    
+                        text-align: left;   
+                        --mush-icon-size: 100px;
+                        background: none !important;  
+                        margin-top: -20px !important;  
+                      }  
+        card_mod:
+          style: |
+            ha-card {
+               {% if is_state('input_boolean.weather_animations', 'on')  %}
+                 {%- set image = states('weather.openweathermap') -%}
+                 background:  url('/local/images/weather/{{image}}.gif') no-repeat center 0px;
+                 background-blend-mode: soft-light;
+                 background-color: rgba(29,29,34, 0.5);
+              {% else  %}
+                background:  url( '/local/images/wallpaper1.jpg' ) no-repeat center 0px;
+                background-size: cover;
+              {% endif %}     
+                height: 290px;
+                text-align: center !important;       
+                border-radius: 30px;
+                background-position: center; 
+                background-repeat: no-repeat;
+                background-size: cover;
+                position: relative;
+                z-index: 0;
+                border: solid 2px;
+                border-color: white;
+            }                    
+              :host {
+                --mush-icon-size: 100px;
+                background: transparent !important;  
+                margin-left: 10px !important;   
+                margin-top: 0px !important;  
+                margin-right: 10px !important;   
+              }  
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        layout_type: masonry
+        layout: {}
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                icon: null
+                primary: null
+                picture: |
+                  {%- set image = states('weather.openweathermap') -%}
+                    /local/images/weather/icon/{{image}}.svg
+                entity: entity.entity
+                fill_container: false
+                multiline_secondary: true
+                layout: horizontal
+                card_mod:
+                  style:
+                    mushroom-state-info$: |
+                      .primary {
+                        font-size: 184px !important;
+                        font-weight: bold !important;
+                        margin-left: 0px;     
+                        margin-top: -450px;  
+                        z-index: 1 !important;
+                        overflow: visible !important;    
+                        font-weight: 900 !important; 
+                        text-indent: 0px;     
+                        text-align: center;
+                      }
+                    mushroom-shape-avatar$: |
+                      .picture {            
+                        border-radius: 0px !important;    
+                        width: auto;
+                        margin-left: 0px;           
+                        margin-bottom: auto;  
+                      }
+                    mushroom-shape-icon$: |
+                      .shape {
+                        position: relative;
+                        border-radius: 0px !important;
+                      }
+                    .: |
+                      ha-card {       
+                        box-shadow: none ;
+                        background-color: transparent;     
+                      }       
+                      :host {
+                        height: 100px !important;
+                        width: 400px;
+                        --mush-icon-size: 160px;
+                        background: transparent !important;  
+                        margin-left: 0px !important;   
+                        margin-top: -10px !important;  
+                        margin-right: Auto;  
+                        box-shadow: none ;
+                      }    
+        card_mod:
+          style: |
+            ha-card {
+                 --ha-card-border-width: 0;
+                 background: transparent !important;
+                height: 150px;
+                text-align: center !important;       
+                border-radius: 30px;
+                background-position: center; 
+                background-repeat: no-repeat;
+                background-size: cover;
+                position: relative;
+                display: block;
+                margin: 0 auto;
+                width: 70%;
+                box-shadow: none ;
+            }                    
+              :host {
+                --mush-icon-size: 100px;
+                background: transparent !important;  
+                margin-left: 20px !important;   
+                margin-top: -80px !important;  
+                margin-right: 20px !important;   
+              }  
+  - type: grid
+    columns: 3
+    square: false
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Daily
+        entity: input_boolean.weather_card_weekly
+        icon: null
+        icon_color: red
+        fill_container: false
+        multiline_secondary: false
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          target:
+            entity_id: input_boolean.weather_card_weekly
+        layout: horizontal
+        picture: null
+        card_mod:
+          style:
+            mushroom-state-info$: |
+              .primary {
+                  {% if is_state(config.entity, 'on') %}
+                    --card-primary-color: black;
+                  {% elif is_state(config.entity, 'off') %}
+                   --card-primary-color: white;
+                  {% else %}
+                    --card-primary-color: rgba(196, 188, 142, 4.6);
+                  {% endif %}
+                font-size: 18px !important;
+                position: relative;
+                overflow: visible !important;
+                margin-top: 0px;   
+                margin-left: 0px;         
+                font-weight: bold !important;
+                text-overflow: ellipsis;  
+                text-align: center;                 
+                text-indent: 5px;      
+                border-radius: 0px;
+              }
+              .secondary {
+                {% if is_state(config.entity, 'on')  %}
+                {% else %}
+                  visibility: hidden;
+                {% endif %}
+                font-size: 16px !important;
+                position: relative;
+                margin-top: -10px;  
+                text-align: left !important;
+                margin-left: 35px;      
+                overflow: visible !important;
+                --card-secondary-color: var(--amber-color); 
+              } 
+            .: |
+              ha-card {
+                {% if is_state(config.entity, 'on')  %}
+                  background: rgb(210, 210, 210);
+                {% else %}
+                  background: none;
+                {% endif %}
+                box-shadow: none !important;
+                border-radius: 30px;
+                height: 30px !important;   
+              }       
+      - type: custom:mushroom-template-card
+        primary: Hourly
+        entity: input_boolean.weather_card_hourly
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          target:
+            entity_id: input_boolean.weather_card_hourly
+        icon: null
+        icon_color: red
+        fill_container: false
+        multiline_secondary: false
+        layout: horizontal
+        picture: null
+        card_mod:
+          style:
+            mushroom-state-info$: |
+              .primary {
+                  {% if is_state(config.entity, 'on')  %}
+                    --card-primary-color: black;
+                  {% else %}
+                    --card-primary-color: white;
+                  {% endif %}
+                font-size: 18px !important;
+                position: relative;
+                overflow: visible !important;
+                margin-top: 0px;   
+                margin-left: 0px;         
+                font-weight: bold !important;
+                text-overflow: ellipsis;  
+                text-align: center;           
+                text-indent: 5px;      
+                border-radius: 0px;
+              }
+              .secondary {
+                {% if is_state(config.entity, 'on')  %}
+                {% else %}
+                  visibility: hidden;
+                {% endif %}
+                font-size: 16px !important;
+                position: relative;
+                margin-top: -10px;  
+                text-align: left !important;
+                margin-left: 30px;      
+                overflow: visible !important;
+                --card-primary-color: var(--amber-color); 
+              } 
+            .: |
+              ha-card {
+                {% if is_state(config.entity, 'on')  %}
+                  background: rgb(210, 210, 210);
+                {% else %}
+                  background: none;
+                {% endif %}   
+                box-shadow: none !important;
+                border-radius: 30px;
+                height: 30px !important;  
+                margin-left: 0px;
+              }   
+      - type: custom:mushroom-template-card
+        primary: Details
+        entity: input_boolean.weather_card_details
+        icon: null
+        icon_color: red
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          target:
+            entity_id: input_boolean.weather_card_details
+        fill_container: false
+        multiline_secondary: false
+        layout: horizontal
+        picture: null
+        card_mod:
+          style:
+            mushroom-state-info$: |
+              .primary {
+                  {% if is_state(config.entity, 'on') %}
+                    --card-primary-color: black;
+                  {% else %}
+                    --card-primary-color: white;
+                  {% endif %}
+                font-size: 18px !important;
+                position: relative;
+                overflow: visible !important;
+                margin-top: 0px;   
+                margin-left: 0px;         
+                font-weight: bold !important;
+                text-overflow: ellipsis;  
+                text-align: center;           
+                text-indent: 5px;      
+                border-radius: 0px;
+              }
+              .secondary {
+                {% if is_state(config.entity, 'on')  %}
+                {% else %}
+                  visibility: hidden;
+                {% endif %}
+                font-size: 16px !important;
+                position: relative;
+                margin-top: -10px;  
+                text-align: left !important;
+                margin-left: 30px;      
+                overflow: visible !important;
+                --secondary-text-color: var(--amber-color); 
+              } 
+            .: |
+              ha-card {
+                {% if is_state(config.entity, 'on')  %}
+                  background: rgb(210, 210, 210);
+                {% else %}
+                  background: none;
+                {% endif %}    
+                box-shadow: none !important;
+                border-radius: 30px;
+                height: 30px !important;  
+                margin-left: 0px;
+                margin-bottom: 40px;
+              }   
+  - type: conditional
+    conditions:
+      - entity: input_boolean.weather_card_weekly
+        state: "on"
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          cards:
+            - type: custom:layout-card
+              layout_type: masonry
+              layout: {}
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{
+                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[0].datetime,).strftime('%a')
+                        }}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_daily','forecast')[0].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_daily','forecast')[0].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            border-color: orange;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{
+                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[1].datetime,).strftime('%a')
+                        }}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_daily','forecast')[1].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_daily','forecast')[1].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            --mush-icon-size: 210px;
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{
+                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[2].datetime,).strftime('%a')
+                        }}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_daily','forecast')[2].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_daily','forecast')[2].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            --mush-icon-size: 210px;
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{
+                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[3].datetime,).strftime('%a')
+                        }}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_daily','forecast')[3].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_daily','forecast')[3].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{
+                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[4].datetime,).strftime('%a')
+                        }}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_daily','forecast')[4].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_daily','forecast')[4].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }   
+          card_mod:
+            style: |
+              ha-card {
+                --ha-card-border-width: 0;
+                padding: 2px;
+                background: none;    
+                box-shadow: none;
+              }
+              :host {
+                background: transparent !important;  
+                margin-left: -1px !important;  
+                margin-right: Auto;   
+                margin-top: -45px !important;   
+              }  
+  - type: conditional
+    conditions:
+      - entity: input_boolean.weather_card_hourly
+        state: "on"
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          layout_type: masonry
+          layout: {}
+          cards:
+            - type: custom:layout-card
+              layout_type: masonry
+              layout: {}
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[1].datetime)
+                        + timedelta(hours=3)).strftime('%H:%M')}}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[1].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[1].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[2].datetime)
+                        + timedelta(hours=3)).strftime('%H:%M')}}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[2].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[2].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg 
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[3].datetime)
+                        + timedelta(hours=3)).strftime('%H:%M')}}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[3].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[3].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            --mush-icon-size: 210px;
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[4].datetime)
+                        + timedelta(hours=3)).strftime('%H:%M')}}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[4].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[4].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }
+                    - type: custom:mushroom-template-card
+                      primary: >
+                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[5].datetime)
+                        + timedelta(hours=3)).strftime('%H:%M')}}
+                      secondary: >
+                        {{
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[5].temperature
+                        | int  }}°C
+                      picture: >
+                        {%- set image =
+                        state_attr('sensor.temperature_forecast_hourly','forecast')[5].condition
+                        -%}  /local/images/weather/icon/{{image}}.svg
+                      icon: null
+                      layout: vertical
+                      icon_color: blue
+                      card_mod:
+                        style: |
+                          ha-card { 
+                            background: var(--card-background-color);
+                            width: 66px;
+                            border-radius: 30px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-bottom: 2px;
+                          }   
+          card_mod:
+            style: |
+              ha-card {
+                --ha-card-border-width: 0;
+                padding: 2px;
+                background: none;    
+                box-shadow: none;
+              }
+              :host {
+                background: transparent !important;  
+                margin-left: -1px !important;  
+                margin-right: Auto;   
+                margin-top: -45px !important;   
+              }  
+  - type: conditional
+    conditions:
+      - entity: input_boolean.weather_card_details
+        state: "on"
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          layout_type: masonry
+          layout: {}
+          cards:
+            - type: custom:layout-card
+              layout_type: custom:grid-layout
+              layout:
+                grid-template-columns: 33% 33% 33%
+                card_margin: 15px 15px 15px 15px
+              cards:
+                - type: custom:mushroom-template-card
+                  secondary: |
+                    {{  states('sensor.openweathermap_rain') | int  }} %
+                  primary: Rain
+                  entity: input_boolean.weather_card_details
+                  icon: mdi:weather-pouring
+                  icon_color: white
+                  fill_container: false
+                  multiline_secondary: false
+                  layout: vertical
+                  picture: null
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          {% if is_state(config.entity, 'on')  %}
+                            --card-primary-color: white;
+                          {% else %}
+                            --card-primary-color: rgba(94, 94, 92, 4.6);
+                          {% endif %}
+                          font-size: 18px !important;
+                          position: relative;
+                          overflow: visible !important;
+                          margin-top: 0px;   
+                          margin-left: 0px;         
+                          font-weight: bold !important;
+                          text-overflow: ellipsis;  
+                          text-align: center;                 
+                          text-indent: 5px;      
+                          border-radius: 0px;
+                        }
+                        .secondary {
+                          {% if is_state(config.entity, 'on')  %}
+                          {% else %}
+                            visibility: hidden;
+                          {% endif %}
+                          font-size: 16px !important;
+                          position: relative;
+                          margin-top: 8px;  
+                          text-align: center !important;
+                          font-weight: bold !important;      
+                          overflow: visible !important;
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                        } 
+                      mushroom-shape-icon$: |
+                        .shape {
+                          position: relative;
+                          border-radius: 0px !important;
+                        }
+                      .: |
+                        ha-card {
+                          background: transparent;
+                          box-shadow: none !important;
+                          border: none;
+                          background-color: none;
+                          height: auto;      
+                        }       
+                          mushroom-shape-icon {
+                            --shape-color: none !important;  
+                          }  
+                          :host {
+                            --mush-icon-size: 70px;
+                          }   
+                - type: custom:mushroom-template-card
+                  secondary: >
+                    {{ 
+                    state_attr('sensor.temperature_forecast_daily','forecast')[0].temperature 
+                    }}°C
+                  primary: Max
+                  entity: input_boolean.weather_card_details
+                  icon: mdi:thermometer-plus
+                  icon_color: white
+                  fill_container: false
+                  multiline_secondary: false
+                  layout: vertical
+                  picture: null
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          {% if is_state(config.entity, 'on')  %}
+                            --card-primary-color: white;
+                          {% else %}
+                            --card-primary-color: rgba(94, 94, 92, 4.6);
+                          {% endif %}
+                          font-size: 18px !important;
+                          position: relative;
+                          overflow: visible !important;
+                          margin-top: 0px;   
+                          margin-left: 0px;         
+                          font-weight: bold !important;
+                          text-overflow: ellipsis;  
+                          text-align: center;                 
+                          text-indent: 5px;      
+                          border-radius: 0px;
+                        }
+                        .secondary {
+                          {% if is_state(config.entity, 'on')  %}
+                          {% else %}
+                            visibility: hidden;
+                          {% endif %}
+                          font-size: 16px !important;
+                          position: relative;
+                          margin-top: 8px;  
+                          text-align: center !important;
+                          font-weight: bold !important;      
+                          overflow: visible !important;
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                        } 
+                      mushroom-shape-icon$: |
+                        .shape {
+                          position: relative;
+                          border-radius: 0px !important;
+                        }
+                      .: |
+                        ha-card {
+                          background: transparent;
+                          box-shadow: none !important;
+                          border: none;
+                          background-color: none;
+                          height: auto;      
+                        }       
+                          mushroom-shape-icon {
+                            --shape-color: none !important;  
+                          }  
+                          :host {
+                            --mush-icon-size: 70px;
+                          }   
+                - type: custom:mushroom-template-card
+                  secondary: >
+                    {{ 
+                    state_attr('sensor.temperature_forecast_daily','forecast')[0].templow 
+                    }}°C
+                  primary: Min
+                  entity: input_boolean.weather_card_details
+                  icon: mdi:thermometer-minus
+                  icon_color: white
+                  fill_container: false
+                  multiline_secondary: false
+                  layout: vertical
+                  picture: null
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          {% if is_state(config.entity, 'on')  %}
+                            --card-primary-color: white;
+                          {% else %}
+                            --card-primary-color: rgba(94, 94, 92, 4.6);
+                          {% endif %}
+                          font-size: 18px !important;
+                          position: relative;
+                          overflow: visible !important;
+                          margin-top: 0px;   
+                          margin-left: 0px;         
+                          font-weight: bold !important;
+                          text-overflow: ellipsis;  
+                          text-align: center;                 
+                          text-indent: 5px;      
+                          border-radius: 0px;
+                        }
+                        .secondary {
+                          {% if is_state(config.entity, 'on')  %}
+                          {% else %}
+                            visibility: hidden;
+                          {% endif %}
+                          font-size: 16px !important;
+                          position: relative;
+                          margin-top: 8px;  
+                          text-align: center !important;
+                          font-weight: bold !important;      
+                          overflow: visible !important;
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                        } 
+                      mushroom-shape-icon$: |
+                        .shape {
+                          position: relative;
+                          border-radius: 0px !important;
+                        }
+                      .: |
+                        ha-card {
+                          background: transparent;
+                          box-shadow: none !important;
+                          border: none;
+                          background-color: none;
+                          height: auto;      
+                        }       
+                          mushroom-shape-icon {
+                            --shape-color: none !important;  
+                          }  
+                          :host {
+                            --mush-icon-size: 70px;
+                          }   
+                - type: custom:mushroom-template-card
+                  secondary: |
+                    {{  states('sensor.openweathermap_humidity') }} %
+                  primary: Humidity
+                  entity: input_boolean.weather_card_details
+                  icon: mdi:water-percent
+                  icon_color: white
+                  fill_container: false
+                  multiline_secondary: false
+                  layout: vertical
+                  picture: null
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          {% if is_state(config.entity, 'on')  %}
+                            --card-primary-color: white;
+                          {% else %}
+                            --card-primary-color: rgba(94, 94, 92, 4.6);
+                          {% endif %}
+                          font-size: 18px !important;
+                          position: relative;
+                          overflow: visible !important;
+                          margin-top: 0px;   
+                          margin-left: 0px;         
+                          font-weight: bold !important;
+                          text-overflow: ellipsis;  
+                          text-align: center;                 
+                          text-indent: 5px;      
+                          border-radius: 0px;
+                        }
+                        .secondary {
+                          {% if is_state(config.entity, 'on')  %}
+                          {% else %}
+                            visibility: hidden;
+                          {% endif %}
+                          font-size: 16px !important;
+                          position: relative;
+                          margin-top: 8px;  
+                          text-align: center !important;
+                          font-weight: bold !important;      
+                          overflow: visible !important;
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                        } 
+                      mushroom-shape-icon$: |
+                        .shape {
+                          position: relative;
+                          border-radius: 0px !important;
+                        }
+                      .: |
+                        ha-card {
+                          background: transparent;
+                          box-shadow: none !important;
+                          border: none;
+                          background-color: none;
+                          height: auto;      
+                        }       
+                          mushroom-shape-icon {
+                            --shape-color: none !important;  
+                          }  
+                          :host {
+                            --mush-icon-size: 70px;
+                          }   
+                - type: custom:mushroom-template-card
+                  secondary: |
+                    {{  states('sensor.openweathermap_wind_speed') | int }} км/ч
+                  primary: Wind
+                  entity: input_boolean.weather_card_details
+                  icon: mdi:weather-windy
+                  icon_color: white
+                  fill_container: false
+                  multiline_secondary: false
+                  layout: vertical
+                  picture: null
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          {% if is_state(config.entity, 'on')  %}
+                            --card-primary-color: white;
+                          {% else %}
+                            --card-primary-color: rgba(94, 94, 92, 4.6);
+                          {% endif %}
+                          font-size: 18px !important;
+                          position: relative;
+                          overflow: visible !important;
+                          margin-top: 0px;   
+                          margin-left: 0px;         
+                          font-weight: bold !important;
+                          text-overflow: ellipsis;  
+                          text-align: center;                 
+                          text-indent: 5px;      
+                          border-radius: 0px;
+                        }
+                        .secondary {
+                          {% if is_state(config.entity, 'on')  %}
+                          {% else %}
+                            visibility: hidden;
+                          {% endif %}
+                          font-size: 16px !important;
+                          position: relative;
+                          margin-top: 8px;  
+                          text-align: center !important;
+                          font-weight: bold !important;      
+                          overflow: visible !important;
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                        } 
+                      mushroom-shape-icon$: |
+                        .shape {
+                          position: relative;
+                          border-radius: 0px !important;
+                        }
+                      .: |
+                        ha-card {
+                          background: transparent;
+                          box-shadow: none !important;
+                          border: none;
+                          background-color: none;
+                          height: auto;      
+                        }       
+                          mushroom-shape-icon {
+                            --shape-color: none !important;  
+                          }  
+                          :host {
+                            --mush-icon-size: 70px;
+                          }   
+                - type: custom:mushroom-template-card
+                  secondary: >
+                    {{ as_timestamp(states.sun.sun.attributes.next_setting) |
+                    timestamp_custom(" %H:%M") | replace(" 0", "") }}
+                  primary: Sunset
+                  entity: input_boolean.weather_card_details
+                  icon: mdi:weather-sunset
+                  icon_color: white
+                  fill_container: false
+                  multiline_secondary: false
+                  layout: vertical
+                  picture: null
+                  card_mod:
+                    style:
+                      mushroom-state-info$: |
+                        .primary {
+                          {% if is_state(config.entity, 'on')  %}
+                            --card-primary-color: white;
+                          {% else %}
+                            --card-primary-color: rgba(94, 94, 92, 4.6);
+                          {% endif %}
+                          font-size: 18px !important;
+                          position: relative;
+                          overflow: visible !important;
+                          margin-top: 0px;   
+                          margin-left: 0px;         
+                          font-weight: bold !important;
+                          text-overflow: ellipsis;  
+                          text-align: center;                 
+                          text-indent: 5px;      
+                          border-radius: 0px;
+                        }
+                        .secondary {
+                          {% if is_state(config.entity, 'on')  %}
+                          {% else %}
+                            visibility: hidden;
+                          {% endif %}
+                          font-size: 16px !important;
+                          position: relative;
+                          margin-top: 8px;  
+                          text-align: center !important;
+                          font-weight: bold !important;      
+                          overflow: visible !important;
+                          --card-secondary-color: rgb(var(--rgb-amber));
+                        } 
+                      mushroom-shape-icon$: |
+                        .shape {
+                          position: relative;
+                          border-radius: 0px !important;
+                        }
+                      .: |
+                        ha-card {
+                          background: transparent;
+                          box-shadow: none !important;
+                          border: none;
+                          background-color: none;
+                          height: auto;      
+                        }       
+                          mushroom-shape-icon {
+                            --shape-color: none !important;  
+                          }  
+                          :host {
+                            --mush-icon-size: 70px;
+                          }   
+          card_mod:
+            style: |
+              ha-card {
+                background-color: rgba(40,40,40, 0.7);
+                border-radius: 30px !important;
+                width: 350px;
+              }                    
+              :host {
+                --mush-icon-size: 70px;
+                margin-top: -10px !important; 
+               }
+card_mod:
+  style: |
+    ha-card {
+      background: none;
+    }                    
