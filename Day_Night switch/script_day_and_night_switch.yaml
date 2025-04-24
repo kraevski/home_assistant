@@ -1,4 +1,4 @@
-nightmodelights:
+dayandnightswitch:
   alias: NightModeLights
   sequence:
   - if:
