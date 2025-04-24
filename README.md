@@ -1,9 +1,8 @@
 # Dashboard for Home Assistant
 
-<img src="https://github.com/kraevski" width="750">
+<img src="https://github.com/user-attachments/assets/20c52132-5524-4666-8bc2-38e9b016e5d1" width="900">
 
-
-## Third party cards you can install using HACS
+## Third party cards used in this project you can install using HACS
 
 - [Bubble Card](https://github.com/Cyberjunky/Home-Assistant-Lovelace-Bubble-Card)
 - [Button Card](https://github.com/custom-cards/button-card)
@@ -23,20 +22,5 @@
 - [Vertical Stack-In Card](https://github.com/ofekashery/vertical-stack-in-card)
 - [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
 
-## Project Structure
 
-```
-├── configuration.yaml
-├── automations/
-├── screenshots/
-├── scripts/
-├── sections/
-├── sensors/
-├── templates/
-├── www/
-│   └── images/
-│       ├── day.png
-│       ├── night.png
-│       ├── weather/
-```
 
