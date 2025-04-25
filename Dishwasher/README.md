@@ -1,8 +1,8 @@
 # Dishwasher card for Home Assistant
+<img src="https://github.com/user-attachments/assets/a8d5888d-67e1-4dd9-9fea-c8bbdfed941d" width="250">
+<img src="https://github.com/user-attachments/assets/1ca234a4-62fc-4b16-9b3c-e2ce0f7b13bf" width="300">
 
-<img src="https://github.com/kraevski" width="750">
-
-## Installation guide:
+## Installation guide: 
 
 1. Install the following third-party tools using [HACS](https://www.hacs.xyz/):
     - [Browser Mod](https://github.com/thomasloven/hass-browser_mod)
