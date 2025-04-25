@@ -1,6 +1,7 @@
 # Day/Night switch button for Home Assistant
 
-<img src="https://github.com/kraevski" width="750">
+<img src="https://github.com/user-attachments/assets/f27f3124-8cce-41bd-a113-8a4e592cf66e" width="200">
+<img src="https://github.com/user-attachments/assets/15f7c9b7-4b8f-44db-a6a1-51d01bd8be49" width="200">
 
 ## Installation guide:
 
