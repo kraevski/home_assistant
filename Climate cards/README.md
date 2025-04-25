@@ -1,6 +1,6 @@
 # Climate control cards for Home Assistant
 
-<img src="https://github.com/kraevski" width="750">
+<img src="https://github.com/user-attachments/assets/413c74bd-b94c-4a16-a209-91578f4573b4" width="750">
 
 ## Installation guide:
 
