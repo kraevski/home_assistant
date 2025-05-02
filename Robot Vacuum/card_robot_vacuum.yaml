@@ -9,281 +9,321 @@ tap_action:
       title: Roborock Vacuum Cleaner
       right_button: Dismiss
       dismissable: true
+      size: wide
       content:
         type: custom:layout-card
         layout_type: custom:masonry-layout
         layout:
-          width: 500
+          width: 750
         button-background: transparent
         cards:
-          - type: custom:vacuum-card
-            entity: vacuum.roborock_qrevo_curv
-            image: /local/images/qrevocurv.png
-            actions:
-              start:
-                service: automation.trigger
-                service_data:
-                  entity_id: automation.run_vacuum_zone
-            stats:
-              default:
-                - entity_id: sensor.roborock_qrevo_curv_sensor_time_left
-                  value_template: >-
-                    {{
-                    as_timestamp(states('sensor.roborock_qrevo_curv_last_clean_end'))
-                    | timestamp_custom('%d-%b-%Y, %I:%M:%S %p') }}
-                  subtitle: Last Cleaning
-                - entity_id: sensor.roborock_qrevo_curv_last_clean_end
-                  value_template: >-
-                    {{ as_datetime(value) -
-                    as_datetime(states('sensor.roborock_qrevo_curv_last_clean_begin'))
-                    }}
-                  subtitle: Duration
-                  unit: h
-            compact_view: false
-            show_status: true
-            show_name: true
-            show_toolbar: false
           - type: custom:layout-card
-            layout_type: custom:grid-layout
+            layout_type: grid-layout
             layout:
-              grid-template-columns: 85% 15%
+              grid-template-columns: repeat(16, 75px)
+              grid-template-rows: repeat(12, 52px)
             cards:
-              - type: custom:mushroom-vacuum-card
-                entity: vacuum.roborock_qrevo_curv
-                commands:
-                  - start_pause
-                  - stop
-                  - locate
-                  - return_home
-                  - clean_spot
-                icon_type: none
-                primary_info: none
-                secondary_info: none
-                double_tap_action:
-                  action: none
-                hold_action:
-                  action: none
-                tap_action:
-                  action: none
-                card_mod: null
-                style:
-                  mushroom-vacuum-commands-control$:
-                    mushroom-button:nth-child(1)$: |
-                      .button ::slotted(*) {
-                        --card-mod-icon-color: orange;
-                      }
-              - type: custom:button-card
-                show_icon: true
-                tap_action:
-                  action: fire-dom-event
-                  browser_mod:
-                    service: browser_mod.popup
-                    data:
-                      title: Roborock Vacuum Cleaner Map
-                      right_button: Dismiss
-                      dismissable: true
-                      content:
-                        type: custom:layout-card
-                        layout_type: custom:masonry-layout
-                        layout:
-                          width: 500
-                        button-background: transparent
-                        cards:
-                          - type: custom:xiaomi-vacuum-map-card
-                            entity: vacuum.roborock_qrevo_curv
-                            vacuum_platform: default
-                            map_source:
-                              camera: image.roborock_qrevo_curv_home_custom
-                            calibration_source:
-                              camera: true
-                            two_finger_pan: false
-                            icons:
-                              - icon: mdi:play
-                                conditions:
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value: docked
-                                tap_action:
-                                  action: call-service
-                                  service: vacuum.start
-                                  service_data:
-                                    entity_id: vacuum.roborock_qrevo_curv
-                              - icon: mdi:pause
-                                conditions:
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: docked
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: idle
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: error
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: paused
-                                tap_action:
-                                  action: call-service
-                                  service: vacuum.pause
-                                  service_data:
-                                    entity_id: vacuum.roborock_qrevo_curv
-                              - icon: mdi:stop
-                                conditions:
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: docked
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: idle
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: error
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: paused
-                                tap_action:
-                                  action: call-service
-                                  service: vacuum.stop
-                                  service_data:
-                                    entity_id: vacuum.roborock_qrevo_curv
-                              - icon: mdi:home-import-outline
-                                conditions:
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: docked
-                                  - entity: vacuum.roborock_qrevo_curv
-                                    value_not: returning
-                                tap_action:
-                                  action: call-service
-                                  service: vacuum.return_to_base
-                                  service_data:
-                                    entity_id: vacuum.roborock_qrevo_curv
-                              - icon: mdi:map-marker-question-outline
-                                tap_action:
-                                  action: call-service
-                                  service: vacuum.locate
-                                  service_data:
-                                    entity_id: vacuum.roborock_qrevo_curv
-                            tiles:
-                              - label: Status
-                                entity: sensor.roborock_qrevo_curv_status
-                                icon: mdi:robot-vacuum
-                              - label: Battery
-                                entity: vacuum.roborock_qrevo_curv
-                                attribute: battery_level
-                                icon: mdi:battery-charging
-                                unit: "%"
-                              - label: Fan Speed
-                                entity: vacuum.roborock_qrevo_curv
-                                attribute: fan_speed
-                                icon: mdi:fan
-                              - label: Location
-                                entity: sensor.roborock_qrevo_curv_current_room
-                                icon: mdi:map-marker-radius
-                              - label: Filter time left
-                                entity: >-
-                                  sensor.roborock_qrevo_curv_filter_time_left
-                                multiplier: 0.0002777777777777778
-                                precision: 0
-                                unit: h
-                                icon: mdi:air-filter
-                              - label: Sensor time left
-                                entity: >-
-                                  sensor.roborock_qrevo_curv_sensor_time_left
-                                multiplier: 0.0002777777777777778
-                                precision: 0
-                                unit: h
-                                icon: mdi:eye-circle-outline
-                              - label: Main brush left
-                                entity: >-
-                                  sensor.roborock_qrevo_curv_main_brush_time_left
-                                multiplier: 0.0002777777777777778
-                                precision: 0
-                                unit: h
-                                icon: mdi:brush
-                              - label: Side brush left
-                                entity: >-
-                                  sensor.roborock_qrevo_curv_side_brush_time_left
-                                multiplier: 0.0002777777777777778
-                                precision: 0
-                                unit: h
-                                icon: mdi:brush
-                icon: mdi:map-search
-                color: rgb(28, 128, 199)
-                styles:
-                  card:
-                    - height: 55px
-                card_mod:
-                  style: |
-                    ha-card {
-                      margin-left: -5px;
-                    }
-          - type: custom:layout-card
-            layout_type: custom:grid-layout
-            layout:
-              grid-template-columns: 50% 50%
-              width: 400
-            cards:
-              - type: custom:mushroom-template-card
-                primary: >-
-                  {{ 'No Dock Errors' if
-                  is_state('sensor.roborock_qrevo_curv_dock_error', 'ok')
-                  else
-                  state_translated('sensor.roborock_qrevo_curv_dock_error')
-                  }}
-                icon: >-
-                  {% if is_state('sensor.roborock_qrevo_curv_dock_error',
-                  'ok') %}
-                      mdi:water-boiler
-                    {% else %}
-                      mdi:water-boiler-alert
-                    {% endif %}
-                tap_action: none
-                icon_color: >-
-                  {% if is_state('sensor.roborock_qrevo_curv_dock_error',
-                  'ok') %}
-                    green         
-                  {% else %}
-                    red
-                  {% endif %}
-              - type: custom:mushroom-template-card
-                primary: >-
-                  {{ 'No Vacuum Errors' if
-                  is_state('sensor.roborock_qrevo_curv_vacuum_error',
-                  'none') else
-                  state_translated('sensor.roborock_qrevo_curv_vacuum_error')
-                  }}
-                icon: >-
-                  {% if is_state('sensor.roborock_qrevo_curv_vacuum_error',
-                  'none') %}
-                      mdi:robot-vacuum
-                    {% else %}
-                      mdi:robot-vacuum-alert
-                    {% endif %}
-                tap_action: none
-                icon_color: >-
-                  {% if is_state('sensor.roborock_qrevo_curv_vacuum_error',
-                  'none') %}
-                    green         
-                  {% else %}
-                    red
-                  {% endif %}
-          - type: custom:layout-card
-            layout_type: custom:grid-layout
-            layout:
-              grid-template-columns: 50% 50%
-            cards:
-              - type: custom:mushroom-select-card
-                entity: select.roborock_qrevo_curv_mop_intensity
-                name: Mop Intensity
-                fill_container: false
-                secondary_info: none
-                icon: mdi:robot-vacuum
-                tap_action:
-                  action: none
-                hold_action:
-                  action: none
-                double_tap_action:
-                  action: none
-              - type: custom:mushroom-select-card
-                name: Mop Mode
-                fill_container: false
-                secondary_info: none
-                icon: mdi:auto-mode
-                tap_action:
-                  action: none
-                hold_action:
-                  action: none
-                double_tap_action:
-                  action: none
-                entity: select.roborock_qrevo_curv_mop_mode
+              - type: vertical-stack
+                view_layout:
+                  grid-column-start: 1
+                  grid-column-end: 15
+                  grid-row-start: 1
+                  grid-row-end: end
+                cards:
+                  - type: custom:xiaomi-vacuum-map-card
+                    entity: vacuum.roborock_qrevo_curv
+                    vacuum_platform: default
+                    map_source:
+                      camera: image.roborock_qrevo_curv_home_custom
+                      crop:
+                        top: 130
+                        bottom: 130
+                        left: 100
+                        right: 80
+                    calibration_source:
+                      camera: true
+                    two_finger_pan: false
+                    icons:
+                      - icon: mdi:play
+                        conditions:
+                          - entity: vacuum.roborock_qrevo_curv
+                            value: docked
+                        tap_action:
+                          action: call-service
+                          service: vacuum.start
+                          service_data:
+                            entity_id: vacuum.roborock_qrevo_curv
+                      - icon: mdi:pause
+                        conditions:
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: docked
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: idle
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: error
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: paused
+                        tap_action:
+                          action: call-service
+                          service: vacuum.pause
+                          service_data:
+                            entity_id: vacuum.roborock_qrevo_curv
+                      - icon: mdi:stop
+                        conditions:
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: docked
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: idle
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: error
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: paused
+                        tap_action:
+                          action: call-service
+                          service: vacuum.stop
+                          service_data:
+                            entity_id: vacuum.roborock_qrevo_curv
+                      - icon: mdi:home-import-outline
+                        conditions:
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: docked
+                          - entity: vacuum.roborock_qrevo_curv
+                            value_not: returning
+                        tap_action:
+                          action: call-service
+                          service: vacuum.return_to_base
+                          service_data:
+                            entity_id: vacuum.roborock_qrevo_curv
+                      - icon: mdi:map-marker-question-outline
+                        tap_action:
+                          action: call-service
+                          service: vacuum.locate
+                          service_data:
+                            entity_id: vacuum.roborock_qrevo_curv
+                    tiles:
+                      - label: Status
+                        entity: sensor.roborock_qrevo_curv_status
+                        icon: mdi:robot-vacuum
+                      - label: Battery
+                        entity: vacuum.roborock_qrevo_curv
+                        attribute: battery_level
+                        icon: mdi:battery-charging
+                        unit: "%"
+                      - label: Fan Speed
+                        entity: vacuum.roborock_qrevo_curv
+                        attribute: fan_speed
+                        icon: mdi:fan
+                      - label: Location
+                        entity: sensor.roborock_qrevo_curv_current_room
+                        icon: mdi:map-marker-radius
+                      - label: Filter time left
+                        entity: sensor.roborock_qrevo_curv_filter_time_left
+                        multiplier: 0.0002777777777777778
+                        precision: 0
+                        unit: h
+                        icon: mdi:air-filter
+                      - label: Sensor time left
+                        entity: sensor.roborock_qrevo_curv_sensor_time_left
+                        multiplier: 0.0002777777777777778
+                        precision: 0
+                        unit: h
+                        icon: mdi:eye-circle-outline
+                      - label: Main brush left
+                        entity: sensor.roborock_qrevo_curv_main_brush_time_left
+                        multiplier: 0.0002777777777777778
+                        precision: 0
+                        unit: h
+                        icon: mdi:brush
+                      - label: Side brush left
+                        entity: sensor.roborock_qrevo_curv_side_brush_time_left
+                        multiplier: 0.0002777777777777778
+                        precision: 0
+                        unit: h
+                        icon: mdi:brush
+                    card_mod:
+                      style: |
+                        ha-card {
+                          display: flex !important;
+                          align-items: stretch;
+                          flex-wrap: wrap;
+                          justify-content: space-evenly;
+                        }
+                        .map-wrapper {
+                          flex-grow: 3;
+                          width: 500px;
+                        }
+                        .controls-wrapper {
+                          flex-grow: 1;
+                          width: 400px;
+                          padding-top: 270px;
+                        }
+                  - type: markdown
+                    content: >-
+                      Last Cleaning was at <font color=orange>{{as_timestamp(states('sensor.roborock_qrevo_curv_last_clean_end')) | timestamp_custom('%d-%b-%Y, %H:%M:%S') }}</font>, and it took <font color=orange>{{
+                      as_datetime(states('sensor.roborock_qrevo_curv_last_clean_end')) - as_datetime(states('sensor.roborock_qrevo_curv_last_clean_begin')) }}</font> h. 
+                    card_mod:
+                          style: |
+                            ha-card {
+                              font-size: 16px;
+                              text-align: center;
+                            }
+              - type: vertical-stack
+                view_layout:
+                  grid-column-start: 9
+                  grid-column-end: 15
+                  grid-row-start: 1
+                  grid-row-end: 4
+                cards:
+                  - type: custom:mod-card
+                    card_mod:
+                      style:
+                        vacuum-card$: >
+                          ha-card {
+                            --vc-spacing: 5px;
+                          }
+
+                          div.header {
+                            display: none;
+                          }
+
+                          ha-card .metadata .vacuum-name {
+                            font-size: 16px;
+                            margin-right: 100px;
+                            width: 250px;
+                          }
+
+                          ha-card .metadata .status .status-text {
+                            color: 
+                            {%- if is_state('vacuum.roborock_qrevo_curv', 'docked') -%}
+                              orange;
+                            {%- else -%}
+                              green;
+                            {%- endif -%}
+                           font-size: 18px;
+                           margin-left: 200px;
+                           margin-top: -20px;
+                          }
+
+                          ha-card .stats .stats-block:nth-child(3)
+                          .stats-value{
+                            text-transform: capitalize;
+                            color: 
+                            {%- if is_state('binary_sensor.roborock_qrevo_curv_mop_drying', 'on') -%}
+                              green;
+                            {%- else -%}
+                              white;
+                            {%- endif -%}
+                          }
+                        .: |
+                          ha-card {
+                            {% if states('sensor.roborock_qrevo_curv_vacuum_error') != 'none' %}
+                            animation: breathing-shadow 1.5s infinite alternate ease-in-out;
+                            {% else %}
+                            animation: none;
+                            {% endif %}
+                          }
+                          @keyframes breathing-shadow {
+                            0% {
+                              box-shadow: 0px 0px 10px 1px #FF8C00;
+                            }
+                            100% {
+                              box-shadow: 0px 0px 13px 3px #FF8C00;
+                            }
+                          }
+                    card:
+                      type: custom:vacuum-card
+                      entity: vacuum.roborock_qrevo_curv
+                      image: /local/images/qrevocurv.png
+                      tap_action: none
+                      show_toolbar: false
+                      compact_view: true
+                      stats:
+                        default:
+                          - entity_id: sensor.roborock_qrevo_curv_cleaning_progress
+                            subtitle: Progress
+                            unit: "%"
+                          - entity_id: sensor.roborock_qrevo_curv_cleaning_time
+                            value_template: "{{ (value | float(0) / 60) | round(0) }}"
+                            subtitle: Cleaning Time
+                            unit: min
+                          - entity_id: binary_sensor.roborock_qrevo_curv_mop_drying
+                            subtitle: Mop Drying
+                          - entity_id: sensor.roborock_mop_drying_remaining_time
+                            subtitle: Remaining
+                            unit: min
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: >-
+                          {{ 'No Dock Errors' if
+                          is_state('sensor.roborock_qrevo_curv_dock_error',
+                          'ok') else
+                          state_translated('sensor.roborock_qrevo_curv_dock_error')
+                          }}
+                        icon: >-
+                          {% if
+                          is_state('sensor.roborock_qrevo_curv_dock_error',
+                          'ok') %}
+                              mdi:water-boiler
+                            {% else %}
+                              mdi:water-boiler-alert
+                            {% endif %}
+                        tap_action: none
+                        icon_color: >-
+                          {% if
+                          is_state('sensor.roborock_qrevo_curv_dock_error',
+                          'ok') %}
+                            green         
+                          {% else %}
+                            red
+                          {% endif %}
+                      - type: custom:mushroom-template-card
+                        primary: >-
+                          {{ 'No Vacuum Errors' if
+                          is_state('sensor.roborock_qrevo_curv_vacuum_error',
+                          'none') else
+                          state_translated('sensor.roborock_qrevo_curv_vacuum_error')
+                          }}
+                        icon: >-
+                          {% if
+                          is_state('sensor.roborock_qrevo_curv_vacuum_error',
+                          'none') %}
+                              mdi:robot-vacuum
+                            {% else %}
+                              mdi:robot-vacuum-alert
+                            {% endif %}
+                        tap_action: none
+                        icon_color: >-
+                          {% if
+                          is_state('sensor.roborock_qrevo_curv_vacuum_error',
+                          'none') %}
+                            green         
+                          {% else %}
+                            red
+                          {% endif %}
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:mushroom-select-card
+                        entity: select.roborock_qrevo_curv_mop_intensity
+                        name: Mop Intensity
+                        fill_container: false
+                        secondary_info: none
+                        icon: mdi:robot-vacuum
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                      - type: custom:mushroom-select-card
+                        name: Mop Mode
+                        fill_container: false
+                        secondary_info: none
+                        icon: mdi:auto-mode
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        entity: select.roborock_qrevo_curv_mop_mode

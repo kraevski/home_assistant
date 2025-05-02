@@ -1,6 +1,6 @@
 # Team tracker card for Home Assistant
 
-![teamtracker](https://github.com/user-attachments/assets/d1fee795-46aa-4881-a63f-97e8e99303dd)
+<img src="https://github.com/user-attachments/assets/d1fee795-46aa-4881-a63f-97e8e99303dd" width="300">
 
 Automatic cards that are created and display the next game for your faviourite teams.
 
