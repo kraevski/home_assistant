@@ -5,7 +5,10 @@ show_raceinfo: false
 visibility:
   - condition: state
     entity: sensor.formula_1
-    state: PRE
+    state_not: IN
+  - condition: state
+    entity: sensor.formula_1
+    state_not: POST
 actions:
   tap_action:
     action: fire-dom-event
@@ -41,7 +44,7 @@ actions:
                     show_precipitation: true
                     show_icon: true
                     api_key:
-                      - WXNR2V3ATGGS4NR6927J6DHX9
+                      - xxx
                   card_mod:
                     style:
                       .: |
@@ -146,6 +149,10 @@ countdown_type:
 card_mod:
   style:
     .: |
+      ha-card {
+            width: 360px;
+            height: 185px;
+          }
       ha-card h2{
         font-size: 16px;
       }     

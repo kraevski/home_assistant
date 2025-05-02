@@ -4,6 +4,7 @@
 
 ## Third party cards and tools used in this project you can install using [HACS](https://www.hacs.xyz/)
 
+- [Auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
 - [Bubble Card](https://github.com/Cyberjunky/Home-Assistant-Lovelace-Bubble-Card)
 - [Browser Mod](https://github.com/thomasloven/hass-browser_mod)
 - [Button Card](https://github.com/custom-cards/button-card)
