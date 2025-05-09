@@ -1,205 +1,326 @@
-views:
-  - title: Sports
-    type: panel
-    icon: mdi:strategy
-    badges: []
-    cards:
-      - type: custom:mod-card
-        card_mod:
-          style:
-            tabbed-card $: |
-              mwc-tab {
-                background: var(--ha-card-background, var(--card-background-color, white) );
-                border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
-                border-width: 2px;
-                border-top-left-radius: 20px;
-                border-top-right-radius: 20px;
-                border-style: solid;
-                overflow: hidden;
-                width: 25%;
-              }
-              mwc-tab[active] {
-                background: #EBFFD8 !important;
-              }
-        card:
-          type: custom:tabbed-card
-          styles:
-            '--mdc-theme-primary': green
-            '--mdc-tab-text-label-color-default': silver
-            '--mdc-typography-button-font-size': 12px
-          tabs:
-            - attributes:
-                label: NBA
-                icon: mdi:basketball
-              card:
-                type: custom:mod-card
-                card_mod:
-                  style:
-                    tabbed-card $: |
-                      mwc-tab {
-                        background: var(--ha-card-background, var(--card-background-color, white) );
-                        border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
-                        border-width: 2px;
-                        border-top-left-radius: 20px;
-                        border-top-right-radius: 20px;
-                        border-style: solid;
-                        overflow: hidden;
-                        width: 25%;
-                      }
-                      mwc-tab[active] {
-                        background: #EBFFD8 !important;
-                      }
-                card:
-                  type: custom:tabbed-card
-                  styles:
-                    '--mdc-theme-primary': green
-                    '--mdc-tab-text-label-color-default': silver
-                    '--mdc-typography-button-font-size': 12px
-                  tabs:
-                    - attributes:
-                        label: Standings
-                        icon: mdi:ballot
-                      card:
-                        type: custom:mod-card
-                        card_mod:
-                          style:
-                            tabbed-card $: |
-                              mwc-tab {
-                                background: var(--ha-card-background, var(--card-background-color, white) );
-                                border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
-                                border-width: 2px;
-                                border-top-left-radius: 20px;
-                                border-top-right-radius: 20px;
-                                border-style: solid;
-                                overflow: hidden;
-                                width: 25%;
-                              }
-                              mwc-tab[active] {
-                                background: #EBFFD8 !important;
-                              }
-                        card:
-                          type: custom:tabbed-card
-                          styles:
-                            '--mdc-theme-primary': green
-                            '--mdc-tab-text-label-color-default': silver
-                            '--mdc-typography-button-font-size': 12px
-                          tabs:
-                            - attributes:
-                                label: Conference
-                              card:
-                                type: custom:stack-in-card
-                                mode: vertical
-                                cards:
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Eastern Conference
-                                      - entity: sensor.nba_eastern_*
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Western Conference
-                                      - entity: sensor.nba_western_*
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                            - attributes:
-                                label: Divisional
-                              card:
-                                type: custom:stack-in-card
-                                mode: vertical
-                                cards:
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Eastern Conference Atlantic
-                                      - entity: sensor.nba_eastern_atlantic
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Eastern Conference Central
-                                      - entity: sensor.nba_eastern_central
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Eastern Conference Southeast
-                                      - entity: sensor.nba_eastern_southeast
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Western Conference Northwest
-                                      - entity: sensor.nba_western_northwest
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Western Conference Pacific
-                                      - entity: sensor.nba_western_pacific
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                                  - type: custom:decluttering-card
-                                    template: nba_settings
-                                    variables:
-                                      - title: Western Conference Southwest
-                                      - entity: sensor.nba_western_southwest
-                                      - sort: >-
-                                          x.stats.find(y=>y.abbreviation ==
-                                          'GB').value
-                            - attributes:
-                                label: Overall
-                              card:
-                                type: custom:decluttering-card
+title: Sports
+type: panel
+icon: mdi:strategy
+badges: []
+cards:
+  - type: custom:mod-card
+    card_mod:
+      style:
+        tabbed-card $: |
+          mwc-tab {
+            background: var(--ha-card-background, var(--card-background-color, white) );
+            border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
+            border-width: 2px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-style: solid;
+            overflow: hidden;
+            width: 25%;
+          }
+          mwc-tab[active] {
+            background: #EBFFD8 !important;
+          }
+    card:
+      type: custom:tabbed-card
+      styles:
+        '--mdc-theme-primary': green
+        '--mdc-tab-text-label-color-default': silver
+        '--mdc-typography-button-font-size': 12px
+      tabs:
+        - attributes:
+            label: NBA
+            icon: mdi:basketball
+          card:
+            type: custom:mod-card
+            card_mod:
+              style:
+                tabbed-card $: |
+                  mwc-tab {
+                    background: var(--ha-card-background, var(--card-background-color, white) );
+                    border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
+                    border-width: 2px;
+                    border-top-left-radius: 20px;
+                    border-top-right-radius: 20px;
+                    border-style: solid;
+                    overflow: hidden;
+                    width: 25%;
+                  }
+                  mwc-tab[active] {
+                    background: #EBFFD8 !important;
+                  }
+            card:
+              type: custom:tabbed-card
+              styles:
+                '--mdc-theme-primary': green
+                '--mdc-tab-text-label-color-default': silver
+                '--mdc-typography-button-font-size': 12px
+              tabs:
+                - attributes:
+                    label: Standings
+                    icon: mdi:ballot
+                  card:
+                    type: custom:mod-card
+                    card_mod:
+                      style:
+                        tabbed-card $: |
+                          mwc-tab {
+                            background: var(--ha-card-background, var(--card-background-color, white) );
+                            border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0) );
+                            border-width: 2px;
+                            border-top-left-radius: 20px;
+                            border-top-right-radius: 20px;
+                            border-style: solid;
+                            overflow: hidden;
+                            width: 25%;
+                          }
+                          mwc-tab[active] {
+                            background: #EBFFD8 !important;
+                          }
+                    card:
+                      type: custom:tabbed-card
+                      styles:
+                        '--mdc-theme-primary': green
+                        '--mdc-tab-text-label-color-default': silver
+                        '--mdc-typography-button-font-size': 12px
+                      tabs:
+                        - attributes:
+                            label: Conference
+                          card:
+                            type: custom:stack-in-card
+                            mode: vertical
+                            cards:
+                              - type: custom:decluttering-card
                                 template: nba_settings
                                 variables:
-                                  - title: Overall
-                                  - entity: sensor.nba_*_*
+                                  - title: Eastern Conference
+                                  - entity: sensor.nba_eastern_*
                                   - sort: >-
                                       x.stats.find(y=>y.abbreviation ==
                                       'GB').value
-                            - attributes:
-                                label: Playoffs
-                              card:
-                                type: markdown
-                                content: coming soon!
-                    - attributes:
-                        label: Postgame
-                        icon: mdi:basketball
-                      card:
-                        type: custom:decluttering-card
-                        template: game_stats
-                        variables:
-                          - sport: NBA
-                          - status: POST
-                    - attributes:
-                        label: Live
-                        icon: mdi:basketball-hoop
-                      card:
-                        type: custom:decluttering-card
-                        template: game_stats
-                        variables:
-                          - sport: NBA
-                          - status: IN
-                    - attributes:
-                        label: Pregame
-                        icon: mdi:account-details
-                      card:
-                        type: custom:decluttering-card
-                        template: game_stats
-                        variables:
-                          - sport: NBA
-                          - status: PRE
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Western Conference
+                                  - entity: sensor.nba_western_*
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                        - attributes:
+                            label: Divisional
+                          card:
+                            type: custom:stack-in-card
+                            mode: vertical
+                            cards:
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Eastern Conference Atlantic
+                                  - entity: sensor.nba_eastern_atlantic
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Eastern Conference Central
+                                  - entity: sensor.nba_eastern_central
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Eastern Conference Southeast
+                                  - entity: sensor.nba_eastern_southeast
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Western Conference Northwest
+                                  - entity: sensor.nba_western_northwest
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Western Conference Pacific
+                                  - entity: sensor.nba_western_pacific
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                              - type: custom:decluttering-card
+                                template: nba_settings
+                                variables:
+                                  - title: Western Conference Southwest
+                                  - entity: sensor.nba_western_southwest
+                                  - sort: >-
+                                      x.stats.find(y=>y.abbreviation ==
+                                      'GB').value
+                        - attributes:
+                            label: Overall
+                          card:
+                            type: custom:decluttering-card
+                            template: nba_settings
+                            variables:
+                              - title: Overall
+                              - entity: sensor.nba_*_*
+                              - sort: >-
+                                  x.stats.find(y=>y.abbreviation ==
+                                  'GB').value
+                        - attributes:
+                            label: Playoffs
+                          card:
+                            type: vertical-stack
+                            cards:
+                              - type: horizontal-stack
+                                cards:
+                                  - type: custom:expander-card
+                                    title: Eastern Conference Play-In
+                                    icon: mdi:basketball
+                                    expanded: false
+                                    cards:
+                                      - type: vertical-stack
+                                        cards:
+                                          - type: custom:decluttering-card
+                                            template: sports_playoffs
+                                            variables:
+                                              - title: Eastern Conference Play-In
+                                              - color: '#4169E1'
+                                              - entity: sensor.nba_playoff_filtered_events
+                                              - events: east_play_in
+                                              - show_rankings: false
+                                              - show_series: true
+                                              - show_broadcast: true
+                                  - type: custom:expander-card
+                                    title: Western Conference Play-In
+                                    icon: mdi:basketball
+                                    expanded: false
+                                    cards:
+                                      - type: vertical-stack
+                                        cards:
+                                          - type: custom:decluttering-card
+                                            template: sports_playoffs
+                                            variables:
+                                              - title: Western Conference Play-In
+                                              - color: '#4169E1'
+                                              - entity: sensor.nba_playoff_filtered_events
+                                              - events: west_play_in
+                                              - show_rankings: false
+                                              - show_series: true
+                                              - show_broadcast: true
+                              - type: horizontal-stack
+                                cards:
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Eastern Conference 1st Round
+                                          - color: '#D50032'
+                                          - entity: sensor.nba_playoff_east_1st_round
+                                          - events: events
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Eastern Conference Semi-Final
+                                          - color: '#D50032'
+                                          - entity: sensor.nba_playoff_filtered_events
+                                          - events: east_semifinals
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Eastern Conference Finals
+                                          - color: '#D50032'
+                                          - entity: sensor.nba_playoff_filtered_events
+                                          - events: east_final
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Championship
+                                          - color: '#DAA520'
+                                          - entity: sensor.nba_playoff_filtered_events
+                                          - events: championship
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Western Conference Finals
+                                          - color: '#013369'
+                                          - entity: sensor.nba_playoff_filtered_events
+                                          - events: west_final
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Western Conference Semi-Final
+                                          - color: '#013369'
+                                          - entity: sensor.nba_playoff_filtered_events
+                                          - events: west_semifinals
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                                  - type: vertical-stack
+                                    cards:
+                                      - type: custom:decluttering-card
+                                        template: sports_playoffs
+                                        variables:
+                                          - title: Western Conference 1st Round
+                                          - color: '#013369'
+                                          - entity: sensor.nba_playoff_west_1st_round
+                                          - events: events
+                                          - show_rankings: false
+                                          - show_series: true
+                                          - show_broadcast: true
+                - attributes:
+                    label: Postgame
+                    icon: mdi:basketball
+                  card:
+                    type: custom:decluttering-card
+                    template: game_stats
+                    variables:
+                      - sport: NBA
+                      - status: POST
+                - attributes:
+                    label: Live
+                    icon: mdi:basketball-hoop
+                  card:
+                    type: custom:decluttering-card
+                    template: game_stats
+                    variables:
+                      - sport: NBA
+                      - status: IN
+                - attributes:
+                    label: Pregame
+                    icon: mdi:account-details
+                  card:
+                    type: custom:decluttering-card
+                    template: game_stats
+                    variables:
+                      - sport: NBA
+                      - status: PRE

@@ -150,11 +150,11 @@ card_mod:
   style:
     .: |
       ha-card {
-            width: 360px;
-            height: 185px;
-          }
+        width: 370px;
+        height: 190px;
+      }
       ha-card h2{
-        font-size: 16px;
+        font-size: 15px;
       }     
       ha-card table tbody tr{
         font-family: var(--primary-font-family);
@@ -164,4 +164,8 @@ card_mod:
       ha-card table tbody tr:nth-child(2n){
         color: orange;
         font-size: 14px;
+      }
+      ha-card h1 {
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
       }

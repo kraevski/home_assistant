@@ -570,139 +570,35 @@ cards:
               cards:
                 - type: horizontal-stack
                   cards:
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{
-                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[0].datetime,).strftime('%a')
-                        }}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_daily','forecast')[0].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_daily','forecast')[0].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            border-color: orange;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{
-                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[1].datetime,).strftime('%a')
-                        }}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_daily','forecast')[1].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_daily','forecast')[1].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            --mush-icon-size: 210px;
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{
-                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[2].datetime,).strftime('%a')
-                        }}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_daily','forecast')[2].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_daily','forecast')[2].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            --mush-icon-size: 210px;
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{
-                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[3].datetime,).strftime('%a')
-                        }}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_daily','forecast')[3].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_daily','forecast')[3].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{
-                          as_datetime(state_attr('sensor.temperature_forecast_daily','forecast')[4].datetime,).strftime('%a')
-                        }}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_daily','forecast')[4].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_daily','forecast')[4].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }   
+                    - type: custom:auto-entities
+                      card:
+                        type: custom:swipe-card
+                        parameters:
+                          slidesPerView: 5
+                          spaceBetween: 2
+                      card_param: cards
+                      filter:
+                        template: >-
+                          {%- for hour_object in
+                          state_attr('sensor.temperature_forecast_daily',
+                          'forecast') -%}
+                              {%- if hour_object != "" -%}
+                                {%- set day = as_datetime(hour_object.datetime).strftime('%a') -%}
+                                {%- set image = "/local/images/weather/icon/" + hour_object.condition + ".svg" -%}
+                                {%- set temperature = ((hour_object.temperature | int) | string) + "°C" -%}
+                                  {{{
+                                    "type": "custom:mushroom-template-card",
+                                    "layout": "vertical",
+                                    "primary": day,
+                                    "secondary": temperature,
+                                    "picture": image,
+                                    "card_mod": {"style": "ha-card {  --card-secondary-color: orange; --card-secondary-font-size: 14px; background: var(--card-background-color); width: 66px; border-radius: 30px; margin-left: auto; margin-right: auto; margin-bottom: 2px; }"}
+                                  }}},
+                              {%- endif -%}   
+                          {%- endfor %}
+                      sort:
+                        method: attribute
+                        attribute: datetime
           card_mod:
             style: |
               ha-card {
@@ -732,134 +628,48 @@ cards:
               layout_type: masonry
               layout: {}
               cards:
-                - type: horizontal-stack
-                  cards:
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[1].datetime)
-                        + timedelta(hours=3)).strftime('%H:%M')}}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[1].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[1].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[2].datetime)
-                        + timedelta(hours=3)).strftime('%H:%M')}}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[2].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[2].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg 
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[3].datetime)
-                        + timedelta(hours=3)).strftime('%H:%M')}}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[3].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[3].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            --mush-icon-size: 210px;
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[4].datetime)
-                        + timedelta(hours=3)).strftime('%H:%M')}}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[4].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[4].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }
-                    - type: custom:mushroom-template-card
-                      primary: >
-                        {{(as_datetime(state_attr('sensor.temperature_forecast_hourly','forecast')[5].datetime)
-                        + timedelta(hours=3)).strftime('%H:%M')}}
-                      secondary: >
-                        {{
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[5].temperature
-                        | int  }}°C
-                      picture: >
-                        {%- set image =
-                        state_attr('sensor.temperature_forecast_hourly','forecast')[5].condition
-                        -%}  /local/images/weather/icon/{{image}}.svg
-                      icon: null
-                      layout: vertical
-                      icon_color: blue
-                      card_mod:
-                        style: |
-                          ha-card { 
-                            background: var(--card-background-color);
-                            width: 66px;
-                            border-radius: 30px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-bottom: 2px;
-                          }   
+                - type: custom:auto-entities
+                  card:
+                    type: custom:swipe-card
+                    parameters:
+                      slidesPerView: 5
+                      spaceBetween: 2
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --ha-card-border-width: 0;
+                          padding: 0px;
+                          background: none;    
+                          box-shadow: none;
+                        }
+                        :host {
+                          background: transparent !important;   
+                        } 
+                  card_param: cards
+                  filter:
+                    template: >-
+                      {%- for hour_object in
+                      state_attr('sensor.temperature_forecast_hourly',
+
+                      'forecast') -%}
+                            {%- if hour_object != "" -%}
+                            {%- set time = (as_datetime(hour_object.datetime) + timedelta(hours=3)).strftime('%H:%M') -%}
+                            {%- set image = "/local/images/weather/icon/" + hour_object.condition + ".svg" -%}
+                            {%- set temperature = ((hour_object.temperature | int) | string) + "°C" -%}
+                              {{
+                              {
+                                "type": "custom:mushroom-template-card",
+                                "layout": "vertical",
+                                "primary": time,
+                                "secondary": temperature,
+                                "picture": image,
+                                "card_mod": {"style": "ha-card { --card-secondary-color: orange; --card-secondary-font-size: 14px; background: var(--card-background-color); width: 66px; border-radius: 30px; margin-left: auto; margin-right: auto; margin-bottom: 2px; }"}
+                              }}},
+                           {%- endif -%}   
+                      {%- endfor %}
+                  sort:
+                    method: attribute
+                    attribute: datetime
           card_mod:
             style: |
               ha-card {
