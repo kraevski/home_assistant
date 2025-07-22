@@ -49,3 +49,7 @@
  - [Teams Tracker card](/Teamtracker)
 
    <img src="https://github.com/user-attachments/assets/d1fee795-46aa-4881-a63f-97e8e99303dd" width="200">
+
+- [Robot Vacuum card](/Robot%20Vacuum)
+
+   <img src="https://github.com/user-attachments/assets/fd291016-565d-4034-91ba-168adb7207eb" width="400">
