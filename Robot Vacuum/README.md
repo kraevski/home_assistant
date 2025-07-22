@@ -1,6 +1,10 @@
 # Robot Vacuum card for Home Assistant
 
-A card for Home Assistant that provides dynamic controls and status feedback for your robot vacuum. The card displays the map of the home and dynamically updates the cleaned area. It shows current status, errors/notifications from the Dock or the Vacuum, gives the option to change Mop Intensity, Mop Mode, Fan Speed. It also displays how many hours until sensors/brushes need to be cleaned and the when the Last Cleaning was and how much time it took.
+<img src="https://github.com/user-attachments/assets/a2f0d74d-dde1-4de5-b0f8-3cb3718bf9db" />
+<img src="https://github.com/user-attachments/assets/fd291016-565d-4034-91ba-168adb7207eb" width="600">
+
+A card for Home Assistant that provides dynamic controls and status feedback for your robot vacuum. The card displays the map of the home and dynamically updates the cleaned area. It shows current status, errors/notifications from the Dock or the Vacuum, gives the option to change Mop Intensity, Mop Mode, Fan Speed. It also displays how many hours until sensors/brushes need to be cleaned and the when the Last Cleaning was and how much time it took. 
+Also a conditional card that is visible when the Robot is cleaning.
 
 ## Installation guide:
 
