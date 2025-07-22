@@ -129,17 +129,32 @@ tap_action:
                         unit: h
                         icon: mdi:eye-circle-outline
                       - label: Main brush left
-                        entity: sensor.roborock_qrevo_curv_main_brush_time_left
+                        entity: >-
+                          sensor.roborock_qrevo_curv_main_brush_time_left
                         multiplier: 0.0002777777777777778
                         precision: 0
                         unit: h
                         icon: mdi:brush
                       - label: Side brush left
-                        entity: sensor.roborock_qrevo_curv_side_brush_time_left
+                        entity: >-
+                          sensor.roborock_qrevo_curv_side_brush_time_left
                         multiplier: 0.0002777777777777778
                         precision: 0
                         unit: h
                         icon: mdi:brush
+                    map_modes:
+                      - template: vacuum_clean_zone
+                      - template: vacuum_follow_path
+                      - name: Pin & Go
+                        icon: mdi:map-marker-plus
+                        run_immediately: false
+                        coordinates_rounding: true
+                        selection_type: MANUAL_POINT
+                        max_selections: 999
+                        repeats_type: NONE
+                        max_repeats: 1
+                        service_call_schema:
+                          service: xiaomi_miio.vacuum_goto
                     card_mod:
                       style: |
                         ha-card {
@@ -157,11 +172,46 @@ tap_action:
                           width: 400px;
                           padding-top: 270px;
                         }
-                  - type: markdown
-                    content: >-
-                      Last Cleaning was at <font color=orange>{{as_timestamp(states('sensor.roborock_qrevo_curv_last_clean_end')) | timestamp_custom('%d-%b-%Y, %H:%M:%S') }}</font>, and it took <font color=orange>{{
-                      as_datetime(states('sensor.roborock_qrevo_curv_last_clean_end')) - as_datetime(states('sensor.roborock_qrevo_curv_last_clean_begin')) }}</font> h. 
-                    card_mod:
+                  - type: custom:layout-card
+                    layout_type: custom:grid-layout
+                    layout:
+                      grid-template-columns: 35% 65%
+                    cards:
+                      - type: custom:mushroom-vacuum-card
+                        entity: vacuum.roborock_qrevo_curv
+                        commands:
+                          - start_pause
+                          - stop
+                          - locate
+                          - return_home
+                          - clean_spot
+                        icon_type: none
+                        primary_info: none
+                        secondary_info: none
+                        double_tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            mushroom-vacuum-commands-control$:
+                              mushroom-button:nth-child(1)$: |
+                                .button ::slotted(*) {
+                                  --card-mod-icon-color: green;
+                                }
+                      - type: markdown
+                        content: >-
+                          Last Cleaning was at <font
+                          color=orange>{{as_timestamp(states('sensor.roborock_qrevo_curv_last_clean_end'))
+                          | timestamp_custom('%d-%b-%Y, %H:%M:%S')
+                          }}</font> and it took <font color=orange>{{
+                          as_datetime(states('sensor.roborock_qrevo_curv_last_clean_end'))
+                          -
+                          as_datetime(states('sensor.roborock_qrevo_curv_last_clean_begin'))
+                          }}</font> h. 
+                        card_mod:
                           style: |
                             ha-card {
                               font-size: 16px;
@@ -239,14 +289,16 @@ tap_action:
                       compact_view: true
                       stats:
                         default:
-                          - entity_id: sensor.roborock_qrevo_curv_cleaning_progress
+                          - entity_id: >-
+                              sensor.roborock_qrevo_curv_cleaning_progress
                             subtitle: Progress
                             unit: "%"
                           - entity_id: sensor.roborock_qrevo_curv_cleaning_time
                             value_template: "{{ (value | float(0) / 60) | round(0) }}"
                             subtitle: Cleaning Time
                             unit: min
-                          - entity_id: binary_sensor.roborock_qrevo_curv_mop_drying
+                          - entity_id: >-
+                              binary_sensor.roborock_qrevo_curv_mop_drying
                             subtitle: Mop Drying
                           - entity_id: sensor.roborock_mop_drying_remaining_time
                             subtitle: Remaining
