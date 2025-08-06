@@ -53,3 +53,10 @@
 - [Robot Vacuum card](/Robot%20Vacuum)
 
    <img src="https://github.com/user-attachments/assets/fd291016-565d-4034-91ba-168adb7207eb" width="400">
+
+   ## Using Home Assistant on a Xiaomi Smart Clock:
+  
+     <img src="https://github.com/user-attachments/assets/50b16c2d-7f66-41e0-8ec5-824613e84766" width="300">
+     
+  - [Guide](/Xiaomi%20Smart%20Clock)
+    
